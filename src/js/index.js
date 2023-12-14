@@ -5,4 +5,23 @@
  * @version 1.0.0
  */
 
-console.log('TODO: Start working on the assignment')
+import './components/chat-app/'
+import './components/memory-game/'
+import './components/custom-app/'
+
+const main = document.querySelector('main')
+const memoryIcon = document.querySelector('#memory')
+const chatIcon = document.querySelector('#chat')
+const customIcon = document.querySelector('#custom')
+
+memoryIcon.addEventListener('click', () => {
+  main.append(document.createElement('memory-game'))
+})
+
+chatIcon.addEventListener('click', () => {
+  main.append(document.createElement('chat-app'))
+})
+
+customIcon.addEventListener('click', () => {
+  main.append(document.createElement('custom-app'))
+})
