@@ -1,7 +1,7 @@
 /**
  * The main script file of the application.
  *
- * @author // TODO: YOUR NAME <YOUR EMAIL>
+ * @author Jennifer von Trotta-Treyden <jv222th@student.lnu>
  * @version 1.0.0
  */
 
