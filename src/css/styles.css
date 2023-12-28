@@ -30,7 +30,7 @@ body {
 }
 
 .app-icons:hover {
-	transform: scale(1.25);
+	transform: scale(1.05);
 }
 
 .app-icons:active {
