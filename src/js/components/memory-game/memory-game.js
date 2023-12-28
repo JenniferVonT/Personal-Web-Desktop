@@ -33,6 +33,7 @@ template.innerHTML = `
   <div id="results" class="disappear">
     <h1>Victory!</h1>
     <p>You completed the game in <b id="tries"> <!--Amount of tries--></b> tries!</p>
+    <p>It took you <b id="time"> <!--Amount of seconds--></b> seconds to complete!</p>
   </div>
   
   <div id="board">
@@ -95,10 +96,12 @@ customElements.define('memory-game',
       this.allButtons = this.shadowRoot.querySelectorAll('.gameModes')
       this.welcomeText = this.shadowRoot.querySelector('#welcomeText')
       this.result = this.shadowRoot.querySelector('#results')
+      this.start = 0
 
       // Set up the event listener for the restart button.
       this.restartButton.addEventListener('click', () => {
         this.#board.textContent = ''
+        this.start = 0
 
         this.welcomeText.classList.remove('disappear')
         this.allButtons.forEach((button) => {
@@ -127,6 +130,9 @@ customElements.define('memory-game',
         this.allButtons.forEach((button) => {
           button.classList.add('hidden')
         })
+
+        // Set up to start a timer.
+        this.start = Date.now()
       })
 
       // Set up the event listener for the medium mode button with a 4x2 grid.
@@ -140,6 +146,9 @@ customElements.define('memory-game',
         this.allButtons.forEach((button) => {
           button.classList.add('hidden')
         })
+
+        // Set up to start a timer.
+        this.start = Date.now()
       })
 
       // Set up the event listener for the hard mode button with a 4x4 grid.
@@ -153,6 +162,9 @@ customElements.define('memory-game',
         this.allButtons.forEach((button) => {
           button.classList.add('hidden')
         })
+
+        // Set up to start a timer.
+        this.start = Date.now()
       })
     }
 
@@ -328,10 +340,16 @@ customElements.define('memory-game',
      * Shows the result of the game.
      */
     endGame () {
+      // End the timer.
+      const endTime = Math.floor((Date.now() - this.start) / 1000)
+
       // Bind the 'i' element with the tries and insert the result.
       const result = this.shadowRoot.querySelector('#tries')
+      const resultTime = this.shadowRoot.querySelector('#time')
       const tries = parseInt(this.#tries) / 2
+
       result.innerHTML = `${tries}`
+      resultTime.innerHTML = `${endTime}`
 
       // Remove all the tiles completely since they are just 'invisible'.
       this.#board.textContent = ''

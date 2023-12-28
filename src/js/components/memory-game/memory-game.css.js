@@ -140,7 +140,8 @@ p {
     font-size: 20px;
 }
 
-#tries {
+#tries,
+#time {
     text-decoration: underline;
     color: red;
 }
