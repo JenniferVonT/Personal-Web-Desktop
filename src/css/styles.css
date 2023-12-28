@@ -20,7 +20,7 @@ main {
 	height: max-content;
 	background-color: #c4e0f7;
 	padding-bottom: 25px;
-	border: 2px solid black;
+	border: 1px solid black;
 	border-radius: 5px;
 	position: absolute;
 }
@@ -72,4 +72,8 @@ main {
 
 .app-icons:active {
 	transform: scale(1);
+}
+
+.memory-game {
+	height: 575px;
 }

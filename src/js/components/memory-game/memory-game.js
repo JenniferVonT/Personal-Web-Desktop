@@ -43,7 +43,7 @@ template.innerHTML = `
 
 customElements.define('memory-game',
   /**
-   * Represents a countdown-timer element.
+   * Represents a memory-game element.
    */
   class extends HTMLElement {
     /**
@@ -98,74 +98,55 @@ customElements.define('memory-game',
       this.result = this.shadowRoot.querySelector('#results')
       this.start = 0
 
+      this.restartButton.tabIndex = 0
+      this.easyButton.tabIndex = 0
+      this.mediumButton.tabIndex = 0
+      this.hardButton.tabIndex = 0
+    }
+
+    /**
+     * Called when the element is inserted into the DOM.
+     */
+    connectedCallback () {
       // Set up the event listener for the restart button.
       this.restartButton.addEventListener('click', () => {
-        this.#board.textContent = ''
-        this.start = 0
-
-        this.welcomeText.classList.remove('disappear')
-        this.allButtons.forEach((button) => {
-          if (button.classList.contains('hidden')) {
-            button.classList.remove('hidden')
-          }
-        })
-
-        if (!this.result.classList.contains('disappear')) {
-          this.result.classList.add('disappear')
-        }
-
-        this.classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen']
-        this.flippedTilesAlt = []
-        this.#tries = 0
+        this.restartGame()
       })
 
       // Set up the event listener for the easy mode button with a 2x2 grid.
       this.easyButton.addEventListener('click', () => {
-        this.setAttribute('grid', '4')
-        this.buildGame()
-        this.shuffle()
-        this.#handleTileClicks()
-
-        this.welcomeText.classList.add('disappear')
-        this.allButtons.forEach((button) => {
-          button.classList.add('hidden')
-        })
-
-        // Set up to start a timer.
-        this.start = Date.now()
+        this.startGame('4')
       })
 
       // Set up the event listener for the medium mode button with a 4x2 grid.
       this.mediumButton.addEventListener('click', () => {
-        this.setAttribute('grid', '8')
-        this.buildGame()
-        this.shuffle()
-        this.#handleTileClicks()
-
-        this.welcomeText.classList.add('disappear')
-        this.allButtons.forEach((button) => {
-          button.classList.add('hidden')
-        })
-
-        // Set up to start a timer.
-        this.start = Date.now()
+        this.startGame('8')
       })
 
       // Set up the event listener for the hard mode button with a 4x4 grid.
       this.hardButton.addEventListener('click', () => {
-        this.setAttribute('grid', '16')
-        this.buildGame()
-        this.shuffle()
-        this.#handleTileClicks()
-
-        this.welcomeText.classList.add('disappear')
-        this.allButtons.forEach((button) => {
-          button.classList.add('hidden')
-        })
-
-        // Set up to start a timer.
-        this.start = Date.now()
+        this.startGame('16')
       })
+    }
+
+    /**
+     * Starts an instance of a game based on the mode picked.
+     *
+     * @param {string} gameMode - Decide how many tiles are created bewteen 4, 8 and 16.
+     */
+    startGame (gameMode) {
+      this.setAttribute('grid', gameMode)
+      this.buildGame()
+      this.shuffle()
+      this.#handleTileClicks()
+
+      this.welcomeText.classList.add('disappear')
+      this.allButtons.forEach((button) => {
+        button.classList.add('hidden')
+      })
+
+      // Set up to start a timer.
+      this.start = Date.now()
     }
 
     /**
@@ -173,7 +154,19 @@ customElements.define('memory-game',
      */
     #handleTileClicks () {
       // Attach event listeners on all tiles and set the flipped attribute when clicked.
-      this.shadowRoot.querySelectorAll('flipping-tile').forEach((tile) => {
+      this.shadowRoot.querySelectorAll('flipping-tile').forEach((tile, index) => {
+        // Make the tile focusable
+        tile.tabIndex = 0
+
+        tile.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' && this.#clickable && !tile.hasAttribute('flipped') && !tile.hasAttribute('disabled')) {
+            tile.setAttribute('flipped', '')
+            this.#tries += 1
+          } else if (event.key.startsWith('Arrow')) {
+            this.handleTileArrowNavigation(event.key, index)
+          }
+        })
+
         tile.addEventListener('click', () => {
           if (this.#clickable) {
             tile.setAttribute('flipped', '')
@@ -216,6 +209,7 @@ customElements.define('memory-game',
           tileElements.forEach((tile) => {
             tile.setAttribute('disabled', '')
             tile.removeAttribute('flipped')
+            tile.tabIndex = -1
           })
           this.flippedTilesAlt = []
           this.#clickable = true
@@ -249,6 +243,11 @@ customElements.define('memory-game',
           this.#appendTiles(i)
         }
       }
+
+      const firstTile = this.shadowRoot.querySelector('flipping-tile')
+      if (firstTile) {
+        firstTile.focus()
+      }
     }
 
     /**
@@ -273,6 +272,9 @@ customElements.define('memory-game',
       // Insert the finished tiles into the board.
       this.#board.append(tile1)
       this.#board.append(tile2)
+
+      tile1.tabIndex = 0
+      tile2.tabIndex = 0
     }
 
     /**
@@ -334,6 +336,29 @@ customElements.define('memory-game',
         ;[data[i], data[randomIndex]] = [data[randomIndex], data[i]]
       }
       return data
+    }
+
+    /**
+     * Resets the game to the start screen.
+     */
+    restartGame () {
+      this.#board.textContent = ''
+      this.start = 0
+
+      this.welcomeText.classList.remove('disappear')
+      this.allButtons.forEach((button) => {
+        if (button.classList.contains('hidden')) {
+          button.classList.remove('hidden')
+        }
+      })
+
+      if (!this.result.classList.contains('disappear')) {
+        this.result.classList.add('disappear')
+      }
+
+      this.classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen']
+      this.flippedTilesAlt = []
+      this.#tries = 0
     }
 
     /**
