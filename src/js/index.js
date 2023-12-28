@@ -39,8 +39,13 @@ function createApp (nameOfApp) {
   const app = document.createElement('div')
   const appBar = document.createElement('div')
   const exit = document.createElement('p')
+  const appName = document.createElement('p')
+
+  appName.textContent = nameOfApp
   exit.textContent = '✖'
+
   exit.classList.add('exit')
+  appName.classList.add('name')
   appBar.classList.add('appBar')
   app.classList.add('app')
 
@@ -48,6 +53,7 @@ function createApp (nameOfApp) {
   appBar.setAttribute('draggable', 'true')
 
   // Bring all the elements together.
+  appBar.append(appName)
   appBar.append(exit)
   app.append(appBar)
   app.append(document.createElement(nameOfApp))
@@ -56,6 +62,7 @@ function createApp (nameOfApp) {
   // Make the 'X' remove the app.
   exit.addEventListener('click', () => {
     main.removeChild(app)
+    appCounter -= 1
   })
 
   let initialX
@@ -106,6 +113,7 @@ function createApp (nameOfApp) {
     event.dataTransfer.dropEffect = 'none'
   })
 
+  // Move the clicked window to the front.
   app.addEventListener('click', () => {
     app.style.zIndex = appCounter++
   })
