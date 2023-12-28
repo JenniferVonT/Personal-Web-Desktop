@@ -34,8 +34,8 @@ template.innerHTML = `
   
 
   div {
-    width: 120px;
-    height: 140px;
+    width: 80px;
+    height: 100px;
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat;

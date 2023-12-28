@@ -8,12 +8,43 @@ body {
 	background: linear-gradient(45deg, #000000 35%, #00edff 50%, #000000 65%);
 	background-repeat: no-repeat;
 	background-size: cover;
-	color: #ffffff;
 	overflow: hidden;
+}
+
+main {
+	padding: 50px;
+}
+
+.app {
+	width: 450px;
+	height: 560px;
+	background-color: #c4e0f7;
+	padding-bottom: 25px;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.appBar {
+	height: 20px;
+	display: flex;
+	background-color: #007d86;
+	justify-content: flex-end;
+	align-items: center;
+	padding-bottom: 2px;
+	padding-right: 4px;
+	border-bottom: 2px solid black;
+	cursor: default;
+}
+
+.exit {
+	width: min-content;
+	margin: 0;
+	text-align: right;
 }
 
 #taskbar {
 	margin-top: auto;
+	padding-left: 10px;
 	position: sticky;
 	display: flex;
 	flex-direction: row;

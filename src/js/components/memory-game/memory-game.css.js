@@ -1,4 +1,3 @@
-
 const memoryGameStyles = `
 flipping-tile::part(front) {
     background-color: azure;

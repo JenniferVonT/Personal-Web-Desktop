@@ -15,13 +15,58 @@ const chatIcon = document.querySelector('#chat')
 const customIcon = document.querySelector('#custom')
 
 memoryIcon.addEventListener('click', () => {
-  main.append(document.createElement('memory-game'))
+  const app = document.createElement('div')
+  const appBar = document.createElement('div')
+  const exit = document.createElement('p')
+  exit.textContent = '✖'
+  exit.classList.add('exit')
+  appBar.classList.add('appBar')
+  app.classList.add('app')
+
+  appBar.append(exit)
+  app.append(appBar)
+  app.append(document.createElement('memory-game'))
+  main.append(app)
+
+  exit.addEventListener('click', () => {
+    main.removeChild(app)
+  })
 })
 
 chatIcon.addEventListener('click', () => {
-  main.append(document.createElement('chat-app'))
+  const app = document.createElement('div')
+  const appBar = document.createElement('div')
+  const exit = document.createElement('p')
+  exit.textContent = '✖'
+  exit.classList.add('exit')
+  appBar.classList.add('appBar')
+  app.classList.add('app')
+
+  appBar.append(exit)
+  app.append(appBar)
+  app.append(document.createElement('chat-app'))
+  main.append(app)
+
+  exit.addEventListener('click', () => {
+    main.removeChild(app)
+  })
 })
 
 customIcon.addEventListener('click', () => {
-  main.append(document.createElement('custom-app'))
+  const app = document.createElement('div')
+  const appBar = document.createElement('div')
+  const exit = document.createElement('p')
+  exit.textContent = '✖'
+  exit.classList.add('exit')
+  appBar.classList.add('appBar')
+  app.classList.add('app')
+
+  appBar.append(exit)
+  app.append(appBar)
+  app.append(document.createElement('custom-app')) // EV ÄNDRA NAMNET PÅ APPEN.
+  main.append(app)
+
+  exit.addEventListener('click', () => {
+    main.removeChild(app)
+  })
 })
