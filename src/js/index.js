@@ -16,7 +16,25 @@ const customIcon = document.querySelector('#custom')
 let appCounter = 0
 
 memoryIcon.addEventListener('click', () => {
+  createApp('memory-game')
+})
+
+chatIcon.addEventListener('click', () => {
+  createApp('chat-app')
+})
+
+customIcon.addEventListener('click', () => {
+  createApp('custom-app') // EV BYTA NAMN PÅ CUSTOM APP.
+})
+
+/**
+ * Create an instance of the given application.
+ *
+ * @param {string} nameOfApp - The name of the application to render.
+ */
+function createApp (nameOfApp) {
   appCounter += 1
+
   // Create all the neccessary elements and add classes.
   const app = document.createElement('div')
   const appBar = document.createElement('div')
@@ -32,7 +50,7 @@ memoryIcon.addEventListener('click', () => {
   // Bring all the elements together.
   appBar.append(exit)
   app.append(appBar)
-  app.append(document.createElement('memory-game'))
+  app.append(document.createElement(nameOfApp))
   main.append(app)
 
   // Make the 'X' remove the app.
@@ -91,44 +109,4 @@ memoryIcon.addEventListener('click', () => {
   app.addEventListener('click', () => {
     app.style.zIndex = appCounter++
   })
-})
-
-chatIcon.addEventListener('click', () => {
-  const app = document.createElement('div')
-  const appBar = document.createElement('div')
-  const exit = document.createElement('p')
-  exit.textContent = '✖'
-  exit.classList.add('exit')
-  appBar.classList.add('appBar')
-  app.classList.add('app')
-  app.setAttribute('draggable', 'true')
-
-  appBar.append(exit)
-  app.append(appBar)
-  app.append(document.createElement('chat-app'))
-  main.append(app)
-
-  exit.addEventListener('click', () => {
-    main.removeChild(app)
-  })
-})
-
-customIcon.addEventListener('click', () => {
-  const app = document.createElement('div')
-  const appBar = document.createElement('div')
-  const exit = document.createElement('p')
-  exit.textContent = '✖'
-  exit.classList.add('exit')
-  appBar.classList.add('appBar')
-  app.classList.add('app')
-  app.setAttribute('draggable', 'true')
-
-  appBar.append(exit)
-  app.append(appBar)
-  app.append(document.createElement('custom-app')) // EV ÄNDRA NAMNET PÅ APPEN.
-  main.append(app)
-
-  exit.addEventListener('click', () => {
-    main.removeChild(app)
-  })
-})
+}
