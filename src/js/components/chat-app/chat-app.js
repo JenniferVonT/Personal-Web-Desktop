@@ -97,7 +97,7 @@ customElements.define('chat-app',
       this.#message = this.shadowRoot.querySelector('#message')
       this.#sendMessage = this.shadowRoot.querySelector('#chat')
       this.#recievedMessage = ''
-      this.#conversation = []
+      this.#conversation = JSON.parse(localStorage.getItem('chatlog')) || []
 
       // Create a websocket and put the appropriate event listeners.
       this.#socket = new WebSocket('wss://courselab.lnu.se/message-app/socket')
@@ -123,6 +123,8 @@ customElements.define('chat-app',
 
       this.#nicknameComp.addEventListener('submitNickname', () => this.#handleStart())
       this.#sendMessage.addEventListener('submit', (event) => this.#sendMessages(event))
+
+      this.#renderConversation()
     }
 
     /**
@@ -190,18 +192,23 @@ customElements.define('chat-app',
     /**
      * Handles all the recieved messages from the server.
      *
-     * @param {Object} message - a parsed JSON object.
+     * @param {object} message - a parsed JSON object.
      */
     #handleRecievedMessages (message) {
       if (message.type === 'message') {
         const username = message.username
         const messageData = message.data
         const userMessage = {
+          // eslint-disable-next-line object-shorthand
           username: username,
           message: messageData
         }
 
         this.#conversation.unshift(userMessage)
+
+        this.#conversation = this.#conversation.slice(0, 30)
+
+        localStorage.setItem('chatlog', JSON.stringify(this.#conversation))
 
         this.#renderConversation()
       }

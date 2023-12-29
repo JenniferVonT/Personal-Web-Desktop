@@ -10,7 +10,7 @@ const chatAppStyles = `
 
 #chatWindow {
     width: 430px;
-    height: 300px;
+    height: 340px;
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
@@ -31,7 +31,7 @@ p {
 #message {
     font-size: 18px;
     width: 425px;
-    height: 80px;
+    height: 50px;
     margin-left: 10px;
     resize: none;
 }
