@@ -51,8 +51,8 @@ label {
 
 h1, 
 p {
-    padding-left: 50px;
-    padding-top: 20px;
+    text-align: center;
+    margin-top: 50px;
 }
 `
 

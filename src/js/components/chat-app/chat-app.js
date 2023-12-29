@@ -6,6 +6,7 @@
  */
 
 import chatAppStyles from './chat-app.css.js'
+import '../nickname-form/index.js'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -13,18 +14,13 @@ template.innerHTML = `
 ${chatAppStyles}
 </style>
 <div id="wrapper">
-    <form id="userData">
-        <h1>Write a name that the other user will see!</h1>
-        <p>You will be paired with a random user</p>
-        <input type="text" id="username" name="username" placeholder="Enter username here">
-        <input type="submit" value="Connect" id="connect">
-    </form>
+    <nickname-form></nickname-form>
 
     <form id="chat" class="hidden">
         <div id="chatWindow"></div>
 
         <label for="message">username</label>
-        <textarea id="message" name="message" rows="10" cols="50" placeholder="Write your message here!"></textarea>
+        <textarea id="message" name="message" rows="10" cols="50" placeholder="Write your message here!" autocomplete="off"></textarea>
         <input type="submit" value="Send" id="send">
     </form>    
 </div>
@@ -36,14 +32,9 @@ customElements.define('chat-app',
    */
   class extends HTMLElement {
     /**
-     * Represents the username input field.
+     * Represents the username.
      */
-    #usernameInput
-
-    /**
-     * Represents the username input form.
-     */
-    #usernameForm
+    #username
 
     /**
      * Represents the window that shows the chat conversation.
@@ -61,9 +52,14 @@ customElements.define('chat-app',
     #sendMessage
 
     /**
-     * Represents the received message from the server/other user.
+     * Represents the latest received message from the server/other user.
      */
     #recievedMessage
+
+    /**
+     * Represents the last 20 messages both sent and recieved
+     */
+    #conversation
 
     /**
      * Creates an instance of the current type.
@@ -75,12 +71,12 @@ customElements.define('chat-app',
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
 
-      this.#usernameInput = this.shadowRoot.querySelector('#username')
-      this.#usernameForm = this.shadowRoot.querySelector('#userData')
+      this.#username = ''
       this.#chatWindow = this.shadowRoot.querySelector('#chatWindow')
       this.#message = this.shadowRoot.querySelector('#message')
       this.#sendMessage = this.shadowRoot.querySelector('#chat')
       this.#recievedMessage = ''
+      this.#conversation = []
 
       // Create a websocket and put the appropriate event listeners.
       this.socket = new WebSocket('wss://courselab.lnu.se/message-app/socket')
