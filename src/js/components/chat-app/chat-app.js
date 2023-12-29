@@ -77,6 +77,11 @@ customElements.define('chat-app',
     #socket
 
     /**
+     * Represents the stored username.
+     */
+    #storedUsername
+
+    /**
      * Creates an instance of the current type.
      */
     constructor () {
@@ -86,7 +91,6 @@ customElements.define('chat-app',
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
 
-      this.#username = ''
       this.#nicknameComp = this.shadowRoot.querySelector('nickname-form')
       this.#chatWindow = this.shadowRoot.querySelector('#chatWindow')
       this.#usernameTag = this.shadowRoot.querySelector('#showUser')
@@ -105,6 +109,8 @@ customElements.define('chat-app',
       this.#socket.addEventListener('message', (event) => {
         this.#recievedMessage = JSON.parse(event.data)
         console.log('Recieved message:', this.#recievedMessage)
+
+        this.#handleRecievedMessages(this.#recievedMessage)
       })
 
       this.#socket.addEventListener('close', (event) => {
@@ -120,6 +126,21 @@ customElements.define('chat-app',
     }
 
     /**
+     * Called when the element is inserted into the DOM.
+     */
+    connectedCallback () {
+    // Check if the username is already stored, and if it is continue without the start screen.
+      this.#storedUsername = localStorage.getItem('chatAppUsername')
+      this.#username = this.#storedUsername || ''
+
+      if (this.#storedUsername) {
+        this.#usernameTag.textContent = this.#username
+        this.#sendMessage.classList.remove('hidden')
+        this.#nicknameComp.classList.add('hidden')
+      }
+    }
+
+    /**
      * Called when the element is removed from the DOM.
      */
     disconnectedCallback () {
@@ -132,6 +153,8 @@ customElements.define('chat-app',
     #handleStart () {
       // Save the submittet username.
       this.#username = this.#nicknameComp.nickname
+
+      localStorage.setItem('chatAppUsername', this.#username)
 
       this.#usernameTag.textContent = this.#username
 
@@ -162,5 +185,47 @@ customElements.define('chat-app',
       this.#socket.send(JSON.stringify(messageToSend))
 
       this.#message.value = ''
+    }
+
+    /**
+     * Handles all the recieved messages from the server.
+     *
+     * @param {Object} message - a parsed JSON object.
+     */
+    #handleRecievedMessages (message) {
+      if (message.type === 'message') {
+        const username = message.username
+        const messageData = message.data
+        const userMessage = {
+          username: username,
+          message: messageData
+        }
+
+        this.#conversation.unshift(userMessage)
+
+        this.#renderConversation()
+      }
+    }
+
+    /**
+     * Renders the conversation in the chat window.
+     */
+    #renderConversation () {
+      const shouldScrollToBottom = this.#chatWindow.scrollTop + this.#chatWindow.clientHeight === this.#chatWindow.scrollHeight
+
+      this.#chatWindow.innerHTML = ''
+      const length = this.#conversation.length
+
+      for (let i = 0; i < length; i++) {
+        const pElement = document.createElement('p')
+
+        pElement.textContent = `${this.#conversation[i].username}:\n \u00A0 ${this.#conversation[i].message}`
+
+        this.#chatWindow.prepend(pElement)
+      }
+
+      if (shouldScrollToBottom) {
+        this.#chatWindow.scrollTop = this.#chatWindow.scrollHeight
+      }
     }
   })

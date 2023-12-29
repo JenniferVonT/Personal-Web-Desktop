@@ -16,6 +16,16 @@ const chatAppStyles = `
     margin-top: 10px;
     margin-bottom: 15px;
     background-color: white;
+    overflow-y: auto;
+    border: 1px solid black;
+}
+
+p {
+    margin: 10px;
+    margin-top: 20px;
+    word-wrap: break-word;
+    white-space: pre-line;
+    background-color: #d6d6d6;
 }
 
 #message {
@@ -47,7 +57,7 @@ label {
 }
 
 h1, 
-p {
+#showUser {
     text-align: center;
     margin-top: 50px;
 }
