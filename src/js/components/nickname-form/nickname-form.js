@@ -78,13 +78,6 @@ customElements.define('nickname-form',
     }
 
     /**
-     * Called after the element is removed from the DOM.
-     */
-    disconnectedCallback () {
-      this.#form.removeEventListener('submit', (event) => this.addNickname(event))
-    }
-
-    /**
      * Get the current nickname.
      *
      * @returns {string} - A string representing the player nickname.

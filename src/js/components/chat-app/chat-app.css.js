@@ -26,14 +26,11 @@ const chatAppStyles = `
     resize: none;
 }
 
-#username {
-    width: 400px;
-    margin: 22px;
-}
-
 label {
-    margin: 10px;
-    background-color: light blue;
+    text-align: center;
+    background-color: white;
+    border: 1px dotted black;
+    margin-left: 10px;
 }
 
 #send {
