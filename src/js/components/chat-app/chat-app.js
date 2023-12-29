@@ -5,73 +5,22 @@
  * @version 1.0.0
  */
 
+import chatAppStyles from './chat-app.css.js'
+
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
-    #wrapper {
-        display: flex;
-        justify-content: center;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
-        width: 450px;
-        height: 450px;
-    }
-
-    #chatWindow {
-        width: 430px;
-        height: 280px;
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-top: 10px;
-        margin-bottom: 15px;
-        background-color: white;
-    }
-    #message {
-        width: 425px;
-        height: 115px;
-        margin-left: 10px;
-        resize: none;
-    }
-
-    #username {
-        width: 400px;
-        margin: 22px;
-    }
-
-    label {
-        margin: 10px;
-        background-color: light blue;
-    }
-
-    #send {
-        margin-left: 10px;
-    }
-
-    #connect {
-        margin-left: 180px;
-        padding: 10px;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    h1, 
-    p {
-        padding-left: 50px;
-        padding-top: 20px;
-    }
-
+${chatAppStyles}
 </style>
 <div id="wrapper">
-    <form id="userData" class="hidden">
+    <form id="userData">
         <h1>Write a name that the other user will see!</h1>
         <p>You will be paired with a random user</p>
         <input type="text" id="username" name="username" placeholder="Enter username here">
         <input type="submit" value="Connect" id="connect">
     </form>
 
-    <form id="chat">
+    <form id="chat" class="hidden">
         <div id="chatWindow"></div>
 
         <label for="message">username</label>
@@ -87,6 +36,36 @@ customElements.define('chat-app',
    */
   class extends HTMLElement {
     /**
+     * Represents the username input field.
+     */
+    #usernameInput
+
+    /**
+     * Represents the username input form.
+     */
+    #usernameForm
+
+    /**
+     * Represents the window that shows the chat conversation.
+     */
+    #chatWindow
+
+    /**
+     * Represents the message input.
+     */
+    #message
+
+    /**
+     * Represents the chat form.
+     */
+    #sendMessage
+
+    /**
+     * Represents the received message from the server/other user.
+     */
+    #recievedMessage
+
+    /**
      * Creates an instance of the current type.
      */
     constructor () {
@@ -95,5 +74,28 @@ customElements.define('chat-app',
       // Attach a shadow DOM tree to this element.
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
+
+      this.#usernameInput = this.shadowRoot.querySelector('#username')
+      this.#usernameForm = this.shadowRoot.querySelector('#userData')
+      this.#chatWindow = this.shadowRoot.querySelector('#chatWindow')
+      this.#message = this.shadowRoot.querySelector('#message')
+      this.#sendMessage = this.shadowRoot.querySelector('#chat')
+      this.#recievedMessage = ''
+
+      // Create a websocket and put the appropriate event listeners.
+      this.socket = new WebSocket('wss://courselab.lnu.se/message-app/socket')
+
+      this.socket.addEventListener('open', (event) => {
+        console.log('WebSocket connection opened:', event)
+      })
+
+      this.socket.addEventListener('message', (event) => {
+        this.#recievedMessage = JSON.parse(event.data)
+        console.log('Recieved message:', this.#recievedMessage)
+      })
+
+      this.socket.addEventListener('close', (event) => {
+        console.log('WebSocket connection closed:', event)
+      })
     }
   })
