@@ -1,7 +1,8 @@
 const chatAppStyles = `
 #wrapper {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     width: 450px;
@@ -47,19 +48,51 @@ p {
     margin-left: 10px;
 }
 
+#emojiButton {
+    margin-left: 10px;
+}
+
 #connect {
     margin-left: 180px;
     padding: 10px;
-}
-
-.hidden {
-    display: none;
 }
 
 h1, 
 #showUser {
     text-align: center;
     margin-top: 50px;
+}
+
+.emojiBtn {
+    width: 45px;
+    height: 25px;
+    text-align: center;
+    justify-content: center;
+    border: none;
+    background-color: white;
+}
+
+.emojiBtn:hover {
+    background-color: #c4e0f7;
+}
+
+#emojiDropdown {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 300px;
+    height: 150px;
+    background-color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid black;
+}
+
+.hidden {
+    display: none;
+}
+
+#emojiDropdown.hidden {
+    display: none;
 }
 `
 

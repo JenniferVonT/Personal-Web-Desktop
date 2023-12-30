@@ -21,5 +21,9 @@
   "devDependencies": {
     "@lnu/eslint-config": "^1.1.10",
     "vite": "^4.4.9"
+  },
+  "dependencies": {
+    "twemoji": "^14.0.2",
+    "twemoji-awesome": "^1.0.6"
   }
 }

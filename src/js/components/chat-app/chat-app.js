@@ -22,6 +22,8 @@ ${chatAppStyles}
         <label for="message" id="showUser"></label>
         <textarea id="message" name="message" rows="10" cols="50" placeholder="Write your message here!" autocomplete="off"></textarea>
         <input type="submit" value="Send" id="send">
+        <button id="emojiButton">😊</button>
+        <div class="hidden" id="emojiDropdown"></div>
     </form>    
 </div>
 `
@@ -98,6 +100,8 @@ customElements.define('chat-app',
       this.#sendMessage = this.shadowRoot.querySelector('#chat')
       this.#recievedMessage = ''
       this.#conversation = JSON.parse(localStorage.getItem('chatlog')) || []
+      this.emojiDropdown = this.shadowRoot.querySelector('#emojiDropdown')
+      this.emojiButton = this.shadowRoot.querySelector('#emojiButton')
 
       // Create a websocket and put the appropriate event listeners.
       this.#socket = new WebSocket('wss://courselab.lnu.se/message-app/socket')
@@ -124,13 +128,17 @@ customElements.define('chat-app',
       this.#message.addEventListener('keydown', (event) => this.#handleKeyDown(event))
       this.#nicknameComp.addEventListener('submitNickname', () => this.#handleStart())
       this.#sendMessage.addEventListener('submit', (event) => this.#sendMessages(event))
+      this.emojiButton.addEventListener('click', (event) => this.#toggleEmojiDropdown(event, 'on'))
+      this.emojiButton.addEventListener('blur', (event) => this.#toggleEmojiDropdown(event, 'off'))
+
+      this.#buildEmojiList()
     }
 
     /**
      * Called when the element is inserted into the DOM.
      */
     connectedCallback () {
-    // Check if the username is already stored, and if it is continue without the start screen.
+      // Check if the username is already stored, and if it is continue without the start screen.
       this.#storedUsername = localStorage.getItem('chatAppUsername')
       this.#username = this.#storedUsername || ''
 
@@ -211,8 +219,8 @@ customElements.define('chat-app',
       if (message.type === 'message') {
         const username = message.username
         const messageData = message.data
+
         const userMessage = {
-          // eslint-disable-next-line object-shorthand
           username: username,
           message: messageData
         }
@@ -239,7 +247,11 @@ customElements.define('chat-app',
       for (let i = 0; i < length; i++) {
         const pElement = document.createElement('p')
 
-        pElement.textContent = `${this.#conversation[i].username}:\n \u00A0 ${this.#conversation[i].message}`
+        const username = this.#conversation[i].username
+        const message = this.#conversation[i].message
+        const formattedMessage = `${username}:\n \u00A0 ${message}`
+
+        pElement.innerHTML = formattedMessage
 
         this.#chatWindow.prepend(pElement)
       }
@@ -247,5 +259,45 @@ customElements.define('chat-app',
       if (shouldScrollToBottom) {
         this.#chatWindow.scrollTop = this.#chatWindow.scrollHeight
       }
+    }
+
+    /**
+     * Toggles the dropdown menu of the emoji list and adds all the emojis.
+     *
+     * @param {Event} event - the click event.
+     * @param {string} onOrOff - is it on (showing) or off (hidden).
+     */
+    async #toggleEmojiDropdown (event, onOrOff) {
+      event.preventDefault()
+
+      if (onOrOff === 'on') {
+        this.emojiDropdown.classList.remove('hidden')
+      } else {
+        this.emojiDropdown.classList.add('hidden')
+      }
+    }
+
+    /**
+     * Builds the emoji list.
+     */
+    async #buildEmojiList () {
+      // Fetch all the emojis.
+      const response = await fetch('https://emoji-api.com/emojis?access_key=48bf4f6218ef9c64ccb2929606657b42222f5d10')
+      const emojis = await response.json()
+
+      // Create a button out of every emoji and insert them when clicked.
+      emojis.forEach((emoji) => {
+        const emojiButton = document.createElement('button')
+        emojiButton.classList.add('emojiBtn')
+        emojiButton.innerHTML = emoji.character
+
+        emojiButton.addEventListener('mousedown', (event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          this.#message.value += emoji.character
+        })
+
+        this.emojiDropdown.append(emojiButton)
+      })
     }
   })
