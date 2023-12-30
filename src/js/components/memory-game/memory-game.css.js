@@ -118,6 +118,7 @@ button:focus {
 
 #startBar {
     display: block;
+    width: 410px;
     padding: 10px;
     margin: 10px;
 }
@@ -131,6 +132,10 @@ div {
 
 #welcomeText ul {
     list-style: none;
+}
+
+#welcomeText {
+    width: 430px;
 }
 
 h1 {

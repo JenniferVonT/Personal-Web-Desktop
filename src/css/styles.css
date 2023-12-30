@@ -16,7 +16,7 @@ main {
 }
 
 .app {
-	width: 450px;
+	width: min-content;
 	height: max-content;
 	background-color: #c4e0f7;
 	padding-bottom: 25px;

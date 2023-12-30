@@ -7,12 +7,12 @@
 
 import './components/chat-app/'
 import './components/memory-game/'
-import './components/custom-app/'
+import './components/drawing-board/'
 
 const main = document.querySelector('main')
 const memoryIcon = document.querySelector('#memory')
 const chatIcon = document.querySelector('#chat')
-const customIcon = document.querySelector('#custom')
+const drawingIcon = document.querySelector('#drawing')
 let appCounter = 0
 
 memoryIcon.addEventListener('click', () => {
@@ -23,8 +23,8 @@ chatIcon.addEventListener('click', () => {
   createApp('Chat', 'chat-app')
 })
 
-customIcon.addEventListener('click', () => {
-  createApp('custom', 'custom-app') // EV BYTA NAMN PÅ CUSTOM APP.
+drawingIcon.addEventListener('click', () => {
+  createApp('drawing board', 'drawing-board')
 })
 
 /**

@@ -22,22 +22,48 @@ ${drawingBoardStyles}
         <div id="colorPicker">
             <button class="color" id="black"></button>
             <button class="color" id="grey"></button>
-            <button class="color" id="crimson"></button>
+            <button class="color" id="maroon"></button>
             <button class="color" id="red"></button>
             <button class="color" id="orange"></button>
             <button class="color" id="yellow"></button>
             <button class="color" id="green"></button>
-            <button class="color" id="blue"></button>
+            <button class="color" id="cyan"></button>
             <button class="color" id="navy"></button>
             <button class="color" id="purple"></button>
         </div>
-        <div id="canvas"></div>
+        <div id="eraser">
+            <button id="eraserBtn"></button>
+        </div>
     </div>
+        <div id="canvas"></div>
 </div>
 `
 
-customElements.define('chat-app',
+customElements.define('drawing-board',
   /**
    * Represents a chat-app element.
    */
-  class extends HTMLElement {})
+  class extends HTMLElement {
+    /**
+     * Creates an instance of the element.
+     */
+    constructor () {
+      super()
+
+      // Attach a shadow DOM tree to this element.
+      this.attachShadow({ mode: 'open' })
+        .appendChild(template.content.cloneNode(true))
+
+      this.canvas = this.shadowRoot.querySelector('#canvas')
+      this.colors = this.shadowRoot.querySelectorAll('.color')
+      this.brushes = this.shadowRoot.querySelectorAll('.brush')
+
+      this.colors.forEach((color) => {
+        color.addEventListener('click', (event) => this.handleColorPicker(event))
+      })
+
+      this.brushes.forEach((brush) => {
+        brush.addEventListener('click', (event) => this.handleBrushPicker(event))
+      })
+    }
+  })
