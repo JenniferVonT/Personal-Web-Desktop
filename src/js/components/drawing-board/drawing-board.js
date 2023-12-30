@@ -93,4 +93,23 @@ customElements.define('drawing-board',
     handleColorPicker (event) {
       event.preventDefault()
     }
+
+    /**
+     * Handles the start of the drawing.
+     *
+     * @param {Event} event - The mousedown action.
+     */
+    startDrawing (event) {}
+
+    /**
+     * Handles the active drawing action.
+     *
+     * @param {Event} event - The mousemove action.
+     */
+    draw (event) {}
+
+    /**
+     * Handles when the cursor stops drawing.
+     */
+    stopDrawing () {}
   })
