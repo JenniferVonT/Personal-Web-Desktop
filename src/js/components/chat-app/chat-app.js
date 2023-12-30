@@ -121,10 +121,9 @@ customElements.define('chat-app',
         console.error('WebSocket encountered an error:', event)
       })
 
+      this.#message.addEventListener('keydown', (event) => this.#handleKeyDown(event))
       this.#nicknameComp.addEventListener('submitNickname', () => this.#handleStart())
       this.#sendMessage.addEventListener('submit', (event) => this.#sendMessages(event))
-
-      this.#renderConversation()
     }
 
     /**
@@ -140,6 +139,8 @@ customElements.define('chat-app',
         this.#sendMessage.classList.remove('hidden')
         this.#nicknameComp.classList.add('hidden')
       }
+
+      this.#renderConversation()
     }
 
     /**
@@ -147,6 +148,18 @@ customElements.define('chat-app',
      */
     disconnectedCallback () {
       this.#socket.close()
+    }
+
+    /**
+     * Handles the event when the 'enter' key is clicked.
+     *
+     * @param {Event} event - keydown event.
+     */
+    #handleKeyDown (event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault()
+        this.#sendMessages(event)
+      }
     }
 
     /**

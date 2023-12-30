@@ -36,7 +36,7 @@ p {
     resize: none;
 }
 
-label {
+#showUser {
     text-align: center;
     background-color: white;
     border: 1px dotted black;
