@@ -35,7 +35,7 @@ ${drawingBoardStyles}
             <button class="color" id="eraserBtn"></button>
         </div>
     </div>
-        <div id="canvas"></div>
+        <canvas id="canvas"></canvas>
 </div>
 `
 
@@ -61,6 +61,8 @@ customElements.define('drawing-board',
 
       this.isDrawing = false
       this.context = this.canvas.getContext('2d')
+      this.brushSize = 5
+      this.activeColor = 'black'
 
       this.colors.forEach((color) => {
         color.addEventListener('click', (event) => this.handleColorPicker(event))
@@ -99,17 +101,38 @@ customElements.define('drawing-board',
      *
      * @param {Event} event - The mousedown action.
      */
-    startDrawing (event) {}
+    startDrawing (event) {
+      this.isDrawing = true
+      this.draw(event)
+    }
 
     /**
      * Handles the active drawing action.
      *
      * @param {Event} event - The mousemove action.
      */
-    draw (event) {}
+    draw (event) {
+      if (!this.isDrawing) {
+        return
+      }
+
+      const rect = this.canvas.getBoundingClientRect()
+      const scaleX = this.canvas.width / rect.width
+      const scaleY = this.canvas.height / rect.height
+
+      const offsetX = (event.clientX - rect.left) * scaleX
+      const offsetY = (event.clientY - rect.top) * scaleY
+
+      this.context.fillStyle = this.activeColor
+      this.context.beginPath()
+      this.context.arc(offsetX, offsetY, this.brushSize, 0, 2 * Math.PI)
+      this.context.fill()
+    }
 
     /**
      * Handles when the cursor stops drawing.
      */
-    stopDrawing () {}
+    stopDrawing () {
+      this.isDrawing = false
+    }
   })

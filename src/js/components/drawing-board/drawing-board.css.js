@@ -27,7 +27,7 @@ const drawingBoardStyles = `
     min-width: 45px;
 }
 
-#canvas {
+canvas {
     display: block;
     margin-left: 5px;
     width: 840px;
