@@ -33,6 +33,7 @@ ${drawingBoardStyles}
         </div>
         <div id="eraser">
             <button class="color" id="eraserBtn"></button>
+            <button id="wipeAll"></button>
         </div>
     </div>
         <canvas id="canvas"></canvas>
@@ -61,7 +62,7 @@ customElements.define('drawing-board',
 
       this.isDrawing = false
       this.context = this.canvas.getContext('2d')
-      this.brushSize = 5
+      this.brushSize = 1
       this.activeColor = 'black'
 
       this.colors.forEach((color) => {
@@ -84,7 +85,15 @@ customElements.define('drawing-board',
      * @param {Event} event - When the button is clicked.
      */
     handleBrushPicker (event) {
-      event.preventDefault()
+      const buttonID = event.currentTarget.id
+
+      if (buttonID === 'small') {
+        this.brushSize = 1
+      } else if (buttonID === 'medium') {
+        this.brushSize = 2.5
+      } else if (buttonID === 'big') {
+        this.brushSize = 4.5
+      }
     }
 
     /**
@@ -93,7 +102,7 @@ customElements.define('drawing-board',
      * @param {Event} event - When the button is clicked.
      */
     handleColorPicker (event) {
-      event.preventDefault()
+
     }
 
     /**
@@ -116,6 +125,7 @@ customElements.define('drawing-board',
         return
       }
 
+      // Get all the coordinates for the cursor and canvas
       const rect = this.canvas.getBoundingClientRect()
       const scaleX = this.canvas.width / rect.width
       const scaleY = this.canvas.height / rect.height

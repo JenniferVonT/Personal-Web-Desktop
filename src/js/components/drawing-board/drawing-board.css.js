@@ -24,7 +24,8 @@ const drawingBoardStyles = `
 #colorPicker button,
 #eraser button {
     width: 45px;
-    min-width: 45px;
+    min-width: 48px;
+    cursor: pointer;
 }
 
 canvas {
@@ -167,6 +168,16 @@ button {
 }
 
 #eraserBtn:hover {
+    border: 2px solid #ffad42;
+}
+
+#wipeAll {
+    background-image: url("../../../images/wipeX.png");
+    background-color: white;
+    border: 2px solid #c4e0f7;
+}
+
+#wipeAll:hover {
     border: 2px solid #ffad42;
 }
 
