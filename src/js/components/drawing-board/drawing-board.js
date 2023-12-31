@@ -31,12 +31,13 @@ ${drawingBoardStyles}
             <button class="color" id="navy"></button>
             <button class="color" id="purple"></button>
         </div>
-        <div id="eraser">
+        <div id="extra">
             <button class="color" id="white"></button>
             <button id="wipeAll"></button>
+            <button id="setBackground">Set as back- ground</button>
         </div>
     </div>
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" width="840px" height="435px"></canvas>
 </div>
 `
 
@@ -60,10 +61,12 @@ customElements.define('drawing-board',
       this.brushes = this.shadowRoot.querySelectorAll('.brush')
       this.eraser = this.shadowRoot.querySelector('#eraserBtn')
       this.wipe = this.shadowRoot.querySelector('#wipeAll')
+      this.background = this.shadowRoot.querySelector('#setBackground')
+      this.canvasImageDataURL = ''
 
       this.isDrawing = false
       this.context = this.canvas.getContext('2d')
-      this.brushSize = 1
+      this.brushSize = 2.5
       this.activeColor = 'black'
 
       this.colors.forEach((color) => {
@@ -76,10 +79,24 @@ customElements.define('drawing-board',
 
       this.wipe.addEventListener('click', () => { this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) })
 
+      this.background.addEventListener('click', () => this.saveCanvasImage())
+
       this.canvas.addEventListener('mousedown', (event) => this.startDrawing(event))
       this.canvas.addEventListener('mousemove', (event) => this.draw(event))
       this.canvas.addEventListener('mouseup', () => this.stopDrawing())
       this.canvas.addEventListener('mouseleave', () => this.stopDrawing())
+    }
+
+    /**
+     * Saves the latest image in localStorage (only one) and dispatch an event that a new image is saved.
+     */
+    saveCanvasImage () {
+      this.canvasImageDataURL = this.canvas.toDataURL()
+      localStorage.setItem('savedCanvasImage', this.canvasImageDataURL)
+
+      this.dispatchEvent(new CustomEvent('savedImage', {
+        bubbles: true
+      }))
     }
 
     /**
@@ -91,11 +108,11 @@ customElements.define('drawing-board',
       const buttonID = event.currentTarget.id
 
       if (buttonID === 'small') {
-        this.brushSize = 1
-      } else if (buttonID === 'medium') {
         this.brushSize = 2.5
+      } else if (buttonID === 'medium') {
+        this.brushSize = 6
       } else if (buttonID === 'big') {
-        this.brushSize = 4.5
+        this.brushSize = 10
       }
     }
 
@@ -130,18 +147,31 @@ customElements.define('drawing-board',
         return
       }
 
-      // Get all the coordinates for the cursor and canvas
+      // Get all the coordinates for the cursor and canvas.
       const rect = this.canvas.getBoundingClientRect()
       const scaleX = this.canvas.width / rect.width
       const scaleY = this.canvas.height / rect.height
-
       const offsetX = (event.clientX - rect.left) * scaleX
       const offsetY = (event.clientY - rect.top) * scaleY
 
-      this.context.fillStyle = this.activeColor
-      this.context.beginPath()
-      this.context.arc(offsetX, offsetY, this.brushSize, 0, 2 * Math.PI)
-      this.context.fill()
+      // Set the colors and brush size on the canvas.
+      this.context.strokeStyle = this.activeColor
+      this.context.lineWidth = this.brushSize * 2
+      this.context.lineCap = 'round'
+      this.context.lineJoin = 'round'
+
+      // See if the cursor has jumped a significant amount (shows that the drawing has stopped and continued after)
+      // If not make a line between the points that are made to make the drawing smoother.
+      if (this.lastX !== undefined && this.lastY !== undefined) {
+        this.context.beginPath()
+        this.context.moveTo(this.lastX, this.lastY)
+        this.context.lineTo(offsetX, offsetY)
+        this.context.stroke()
+      }
+
+      // Continously save the coordinates to check if the cursor has "jumped".
+      this.lastX = offsetX
+      this.lastY = offsetY
     }
 
     /**
@@ -149,5 +179,9 @@ customElements.define('drawing-board',
      */
     stopDrawing () {
       this.isDrawing = false
+
+      // When the drawing stops, set the "coordinates" for the cursor as undefined.
+      this.lastX = undefined
+      this.lastY = undefined
     }
   })

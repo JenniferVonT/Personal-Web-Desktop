@@ -12,7 +12,7 @@ const drawingBoardStyles = `
 
 #brushPicker,
 #colorPicker,
-#eraser {
+#extra {
     display: flex;
     background-color: white;
     margin: 5px;
@@ -22,7 +22,7 @@ const drawingBoardStyles = `
 
 #brushPicker button,
 #colorPicker button,
-#eraser button {
+#extra button {
     width: 45px;
     min-width: 48px;
     cursor: pointer;
@@ -31,8 +31,6 @@ const drawingBoardStyles = `
 canvas {
     display: block;
     margin-left: 5px;
-    width: 840px;
-    height: 435px;
     background-color: white;
 }
 
@@ -171,6 +169,16 @@ button {
     border: 2px solid #ffad42;
 }
 
+#colorwheel {
+    background-image: url("../../../images/colorwheel.png");
+    background-color: white;
+    border: 2px solid #c4e0f7;
+}
+
+#colorwheel:hover {
+    border: 2px solid #ffad42;
+}
+
 #wipeAll {
     background-image: url("../../../images/wipeX.png");
     background-color: white;
@@ -181,6 +189,16 @@ button {
     border: 2px solid #ffad42;
 }
 
+#setBackground {
+    background-color: azure;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    border: 2px solid #c4e0f7;
+}
+
+#setBackground:hover {
+    border: 2px solid #ffad42;
+}
 `
 
 export default drawingBoardStyles
