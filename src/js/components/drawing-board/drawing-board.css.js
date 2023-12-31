@@ -162,12 +162,12 @@ button {
     border: 2px solid #ffad42;
 }
 
-#eraserBtn {
+#white {
     background-color: white;
     border: 2px solid #c4e0f7;
 }
 
-#eraserBtn:hover {
+#white:hover {
     border: 2px solid #ffad42;
 }
 

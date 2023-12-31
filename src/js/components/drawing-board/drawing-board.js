@@ -32,7 +32,7 @@ ${drawingBoardStyles}
             <button class="color" id="purple"></button>
         </div>
         <div id="eraser">
-            <button class="color" id="eraserBtn"></button>
+            <button class="color" id="white"></button>
             <button id="wipeAll"></button>
         </div>
     </div>
@@ -59,6 +59,7 @@ customElements.define('drawing-board',
       this.colors = this.shadowRoot.querySelectorAll('.color')
       this.brushes = this.shadowRoot.querySelectorAll('.brush')
       this.eraser = this.shadowRoot.querySelector('#eraserBtn')
+      this.wipe = this.shadowRoot.querySelector('#wipeAll')
 
       this.isDrawing = false
       this.context = this.canvas.getContext('2d')
@@ -72,6 +73,8 @@ customElements.define('drawing-board',
       this.brushes.forEach((brush) => {
         brush.addEventListener('click', (event) => this.handleBrushPicker(event))
       })
+
+      this.wipe.addEventListener('click', () => { this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) })
 
       this.canvas.addEventListener('mousedown', (event) => this.startDrawing(event))
       this.canvas.addEventListener('mousemove', (event) => this.draw(event))
@@ -102,7 +105,9 @@ customElements.define('drawing-board',
      * @param {Event} event - When the button is clicked.
      */
     handleColorPicker (event) {
+      const buttonID = event.currentTarget.id
 
+      this.activeColor = buttonID
     }
 
     /**
