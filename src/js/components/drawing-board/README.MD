@@ -25,3 +25,10 @@ Sets the color of the brush.
 ### `savedImage`
 
 Dispatched when an image is being saved.
+
+#### Example
+
+```javascript
+// Get the current saved image.
+const savedImage = localStorage.getItem('savedCanvasImage')
+```
