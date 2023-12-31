@@ -13,6 +13,7 @@ const main = document.querySelector('main')
 const memoryIcon = document.querySelector('#memory')
 const chatIcon = document.querySelector('#chat')
 const drawingIcon = document.querySelector('#drawing')
+const drawingBoard = document.querySelector('drawing-board')
 let appCounter = 0
 
 memoryIcon.addEventListener('click', () => {
@@ -26,6 +27,8 @@ chatIcon.addEventListener('click', () => {
 drawingIcon.addEventListener('click', () => {
   createApp('drawing board', 'drawing-board')
 })
+
+drawingBoard.addEventListener('')
 
 /**
  * Create an instance of the given application.
