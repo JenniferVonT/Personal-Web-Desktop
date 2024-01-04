@@ -194,20 +194,18 @@ customElements.define('chat-app',
     #sendMessages (event) {
       event.preventDefault()
 
-      const messageToSend = {
-        // eslint-disable-next-line quote-props, quotes
-        "type": "message",
-        // eslint-disable-next-line quote-props, quotes
-        "data": `${this.#message.value.toString()}`,
-        // eslint-disable-next-line quote-props, quotes
-        "username": `${this.#username}`,
-        // eslint-disable-next-line quote-props, quotes
-        "key": "eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd"
+      if (this.#message.value !== '') {
+        const messageToSend = {
+          type: 'message',
+          data: `${this.#message.value.toString()}`,
+          username: `${this.#username}`,
+          key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+        }
+
+        this.#socket.send(JSON.stringify(messageToSend))
+
+        this.#message.value = ''
       }
-
-      this.#socket.send(JSON.stringify(messageToSend))
-
-      this.#message.value = ''
     }
 
     /**
@@ -221,7 +219,7 @@ customElements.define('chat-app',
         const messageData = message.data
 
         const userMessage = {
-          username: username,
+          username,
           message: messageData
         }
 
@@ -239,6 +237,7 @@ customElements.define('chat-app',
      * Renders the conversation in the chat window.
      */
     #renderConversation () {
+      // Check if the scrollbar should scroll to the bottom.
       const shouldScrollToBottom = this.#chatWindow.scrollTop + this.#chatWindow.clientHeight === this.#chatWindow.scrollHeight
 
       this.#chatWindow.innerHTML = ''
@@ -251,7 +250,7 @@ customElements.define('chat-app',
         const message = this.#conversation[i].message
         const formattedMessage = `${username}:\n \u00A0 ${message}`
 
-        pElement.innerHTML = formattedMessage
+        pElement.textContent = formattedMessage
 
         this.#chatWindow.prepend(pElement)
       }
@@ -292,9 +291,14 @@ customElements.define('chat-app',
         emojiButton.innerHTML = emoji.character
 
         emojiButton.addEventListener('mousedown', (event) => {
-          event.preventDefault()
+          // Disable propagation as to not trigger the eventlistener that sends the message.
           event.stopPropagation()
           this.#message.value += emoji.character
+
+          // Push the focus last in the call stack to regain focus to the textarea.
+          setTimeout(() => {
+            this.#message.focus()
+          }, 0)
         })
 
         this.emojiDropdown.append(emojiButton)
