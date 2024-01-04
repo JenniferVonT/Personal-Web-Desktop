@@ -30,14 +30,15 @@ ${drawingBoardStyles}
             <button class="color" id="cyan"></button>
             <button class="color" id="navy"></button>
             <button class="color" id="purple"></button>
+            <button class="color" id="white"></button>
         </div>
         <div id="extra">
-            <button class="color" id="white"></button>
+            <button id="bucket"></button>
             <button id="wipeAll"></button>
             <button id="setBackground">Set as back- ground</button>
         </div>
     </div>
-        <canvas id="canvas" width="840px" height="435px"></canvas>
+        <canvas id="canvas" width="840px" height="440px"></canvas>
 </div>
 `
 
@@ -61,6 +62,7 @@ customElements.define('drawing-board',
       this.brushes = this.shadowRoot.querySelectorAll('.brush')
       this.eraser = this.shadowRoot.querySelector('#eraserBtn')
       this.wipe = this.shadowRoot.querySelector('#wipeAll')
+      this.bucket = this.shadowRoot.querySelector('#bucket')
       this.background = this.shadowRoot.querySelector('#setBackground')
       this.canvasImageDataURL = ''
 
@@ -77,10 +79,14 @@ customElements.define('drawing-board',
         brush.addEventListener('click', (event) => this.handleBrushPicker(event))
       })
 
+      this.bucket.addEventListener('click', () => this.useBucketTool())
+
+      // Clear the entire canvas.
       this.wipe.addEventListener('click', () => { this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) })
 
       this.background.addEventListener('click', () => this.saveCanvasImage())
 
+      // Add all the mouse movement listeners on the canvas.
       this.canvas.addEventListener('mousedown', (event) => this.startDrawing(event))
       this.canvas.addEventListener('mousemove', (event) => this.draw(event))
       this.canvas.addEventListener('mouseup', () => this.stopDrawing())
@@ -148,11 +154,7 @@ customElements.define('drawing-board',
       }
 
       // Get all the coordinates for the cursor and canvas.
-      const rect = this.canvas.getBoundingClientRect()
-      const scaleX = this.canvas.width / rect.width
-      const scaleY = this.canvas.height / rect.height
-      const offsetX = (event.clientX - rect.left) * scaleX
-      const offsetY = (event.clientY - rect.top) * scaleY
+      const { offsetX, offsetY } = this.getLastMouseCoordinates(event)
 
       // Set the colors and brush size on the canvas.
       this.context.strokeStyle = this.activeColor
@@ -183,5 +185,21 @@ customElements.define('drawing-board',
       // When the drawing stops, set the "coordinates" for the cursor as undefined.
       this.lastX = undefined
       this.lastY = undefined
+    }
+
+    /**
+     * Get the mouse cursor coordinates in relation to the canvas.
+     *
+     * @param {MouseEvent} event - The mousemove and mousedown events.
+     * @returns {number} - The coordinates for the mouse.
+     */
+    getLastMouseCoordinates (event) {
+      const rect = this.canvas.getBoundingClientRect()
+      const scaleX = this.canvas.width / rect.width
+      const scaleY = this.canvas.height / rect.height
+      const offsetX = (event.clientX - rect.left) * scaleX
+      const offsetY = (event.clientY - rect.top) * scaleY
+
+      return { offsetX, offsetY }
     }
   })

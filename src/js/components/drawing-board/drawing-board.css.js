@@ -45,17 +45,9 @@ button {
     border: 2px solid #c4e0f7;
 }
 
-#black:hover {
-    border: 2px solid #ffad42;
-}
-
 #grey {
     background-color: grey;
     border: 2px solid #c4e0f7;    
-}
-
-#grey:hover {
-    border: 2px solid #ffad42;
 }
 
 #maroon {
@@ -63,17 +55,9 @@ button {
     border: 2px solid #c4e0f7;    
 }
 
-#maroon:hover {
-    border: 2px solid #ffad42;
-}
-
 #red {
     background-color: red;
     border: 2px solid #c4e0f7;    
-}
-
-#red:hover {
-    border: 2px solid #ffad42;
 }
 
 #orange {
@@ -81,17 +65,9 @@ button {
     border: 2px solid #c4e0f7;    
 }
 
-#orange:hover {
-    border: 2px solid #ffad42;
-}
-
 #yellow {
     background-color: yellow;
     border: 2px solid #c4e0f7;    
-}
-
-#yellow:hover {
-    border: 2px solid #ffad42;
 }
 
 #green {
@@ -99,17 +75,9 @@ button {
     border: 2px solid #c4e0f7;    
 }
 
-#green:hover {
-    border: 2px solid #ffad42;
-}
-
 #cyan {
     background-color: cyan;
     border: 2px solid #c4e0f7;    
-}
-
-#cyan:hover {
-    border: 2px solid #ffad42;
 }
 
 #navy {
@@ -117,17 +85,9 @@ button {
     border: 2px solid #c4e0f7;    
 }
 
-#navy:hover {
-    border: 2px solid #ffad42;
-}
-
 #purple {
     background-color: purple;
     border: 2px solid #c4e0f7;    
-}
-
-#purple:hover {
-    border: 2px solid #ffad42;
 }
 
 #small {
@@ -136,18 +96,10 @@ button {
     border: 2px solid #c4e0f7;
 }
 
-#small:hover {
-    border: 2px solid #ffad42;
-}
-
 #medium {
     background-color: white;
     background: linear-gradient(70deg, white 35%, black 40%, black 60%, white 65%);
     border: 2px solid #c4e0f7;
-}
-
-#medium:hover {
-    border: 2px solid #ffad42;
 }
 
 #big {
@@ -156,27 +108,9 @@ button {
     border: 2px solid #c4e0f7;
 }
 
-#big:hover {
-    border: 2px solid #ffad42;
-}
-
 #white {
     background-color: white;
     border: 2px solid #c4e0f7;
-}
-
-#white:hover {
-    border: 2px solid #ffad42;
-}
-
-#colorwheel {
-    background-image: url("../../../images/colorwheel.png");
-    background-color: white;
-    border: 2px solid #c4e0f7;
-}
-
-#colorwheel:hover {
-    border: 2px solid #ffad42;
 }
 
 #wipeAll {
@@ -185,8 +119,8 @@ button {
     border: 2px solid #c4e0f7;
 }
 
-#wipeAll:hover {
-    border: 2px solid #ffad42;
+#bucket {
+    border: 2px solid #c4e0f7;
 }
 
 #setBackground {
@@ -196,8 +130,16 @@ button {
     border: 2px solid #c4e0f7;
 }
 
-#setBackground:hover {
-    border: 2px solid #ffad42;
+#brushPicker button:hover {
+    border: 2px solid #ffad42;  
+}
+
+#colorPicker button:hover {
+    border: 2px solid #ffad42;  
+}
+
+#extra button:hover {
+    border: 2px solid #ffad42;  
 }
 `
 
