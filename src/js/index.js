@@ -63,6 +63,13 @@ function createApp (name, component) {
   // Make the appBar draggable.
   appBar.setAttribute('draggable', 'true')
 
+  // Make every new app window slightly offset everytime it is added in the DOM.
+  const offset = 20 * appCounter
+
+  app.style.position = 'absolute'
+  app.style.left = `${offset}px`
+  app.style.top = `${offset}px`
+
   // Bring all the elements together.
   appBar.append(appName)
   appBar.append(exit)
@@ -70,10 +77,10 @@ function createApp (name, component) {
   app.append(document.createElement(component))
   main.append(app)
 
-  // Make the 'X' remove the app.
+  // Make the 'X' remove the app and lower the appCounter.
   exit.addEventListener('click', () => {
-    main.removeChild(app)
     appCounter -= 1
+    main.removeChild(app)
   })
 
   let initialX
@@ -129,7 +136,7 @@ function createApp (name, component) {
 
   // Move the clicked window to the front.
   app.addEventListener('click', () => {
-    app.style.zIndex = appCounter++
+    app.style.zIndex = appCounter + 1
     app.focus()
   })
 
