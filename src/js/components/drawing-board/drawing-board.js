@@ -33,7 +33,6 @@ ${drawingBoardStyles}
             <button class="color" id="white"></button>
         </div>
         <div id="extra">
-            <button id="bucket"></button>
             <button id="wipeAll"></button>
             <button id="setBackground">Set as back- ground</button>
         </div>
@@ -62,7 +61,6 @@ customElements.define('drawing-board',
       this.brushes = this.shadowRoot.querySelectorAll('.brush')
       this.eraser = this.shadowRoot.querySelector('#eraserBtn')
       this.wipe = this.shadowRoot.querySelector('#wipeAll')
-      this.bucket = this.shadowRoot.querySelector('#bucket')
       this.background = this.shadowRoot.querySelector('#setBackground')
       this.canvasImageDataURL = ''
 
@@ -78,8 +76,6 @@ customElements.define('drawing-board',
       this.brushes.forEach((brush) => {
         brush.addEventListener('click', (event) => this.handleBrushPicker(event))
       })
-
-      this.bucket.addEventListener('click', () => this.useBucketTool())
 
       // Clear the entire canvas.
       this.wipe.addEventListener('click', () => { this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) })
