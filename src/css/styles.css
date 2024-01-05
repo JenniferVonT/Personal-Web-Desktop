@@ -5,7 +5,6 @@ body {
 	display: flex;
 	flex-direction: column;
 	background: #000000;
-	background: linear-gradient(45deg, #000000 35%, #00edff 50%, #000000 65%);
 	background-repeat: no-repeat;
 	background-size: cover;
 	overflow: hidden;
@@ -18,7 +17,7 @@ main {
 .app {
 	width: min-content;
 	height: max-content;
-	background-color: #c4e0f7;
+	background-color: #f1f1f1;
 	padding-bottom: 5px;
 	border: 1px solid black;
 	border-radius: 5px;
@@ -28,8 +27,9 @@ main {
 .appBar {
 	height: 20px;
 	display: flex;
-	background-color: #007d86;
 	justify-content: space-between;
+	background-color: #3a3a3a;
+	color: rgb(226, 226, 226);
 	align-items: center;
 	padding-bottom: 2px;
 	padding-right: 4px;
@@ -54,7 +54,6 @@ main {
 	position: sticky;
 	display: flex;
 	flex-direction: row;
-	background-color: #00eeff42;
 	height: 60px;
 }
 
@@ -76,4 +75,37 @@ main {
 
 .memory-game {
 	height: 575px;
+}
+
+/*------ THEMES ------*/
+
+.red {
+	background-color: #fc8279;
+    background: radial-gradient(circle, #000000 48%, #fc8279 100%);
+}
+
+.redBar {
+	background-color: #ec342742;
+}
+
+.green {
+	background-color: #73ff40;
+    background: radial-gradient(circle, #000000 35%, #73ff40 50%, #000000 65%);
+}
+
+.greenBar {
+	background-color: #73ff4042;
+}
+
+.blue {
+	background-color: #00eeff;
+    background: linear-gradient(45deg, #000000 35%, #00edff 50%, #000000 65%);
+}
+
+.blueBar {
+	background-color: #00eeff42;
+}
+
+.customBar {
+	background-color: #0000009d;
 }

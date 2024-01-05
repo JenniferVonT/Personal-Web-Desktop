@@ -4,6 +4,7 @@
  * @author Jennifer von Trotta-Treyden <jv222th@student.lnu.se>
  * @version 1.0.0
  */
+
 import settingsAppStyles from './settings-app.css'
 
 const template = document.createElement('template')
@@ -70,7 +71,7 @@ customElements.define('settings-app',
     /**
      * Called when inserted into the DOM.
      */
-    connectecCallback () {
+    connectedCallback () {
       this.red.addEventListener('click', () => this.setTheme('red'),
         { signal: this.#abortController.signal })
 
@@ -96,5 +97,11 @@ customElements.define('settings-app',
      *
      * @param {string} theme - The theme to change to.
      */
-    setTheme (theme) {}
+    setTheme (theme) {
+      this.dispatchEvent(new CustomEvent('newThemeSet', {
+        bubbles: true,
+        composed: true,
+        detail: theme
+      }))
+    }
   })

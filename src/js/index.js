@@ -16,6 +16,10 @@ const memoryIcon = document.querySelector('#memory')
 const chatIcon = document.querySelector('#chat')
 const drawingIcon = document.querySelector('#drawing')
 const settings = document.querySelector('#settings')
+const customImage = localStorage.getItem('savedCanvasImage')
+const currentTheme = localStorage.getItem('theme')
+const taskBar = document.querySelector('#taskbar')
+
 let appCounter = 0
 
 memoryIcon.addEventListener('click', () => {
@@ -34,12 +38,35 @@ settings.addEventListener('click', () => {
   createApp('Settings', 'settings-app')
 })
 
+// Check what theme was last set and put that on.
+if (currentTheme.length !== 0) {
+  setNewTheme(currentTheme)
+}
+
 /**
- * When the drawing board changes the background.
+ * Sets the new theme of the page.
+ *
+ * @param {string} theme - The name of the theme.
  */
-function changeBackground () {
-  const canvasImage = localStorage.getItem('savedCanvasImage')
-  body.style.backgroundImage = `url(${canvasImage})`
+function setNewTheme (theme) {
+  if (theme !== 'custom') {
+    // Set the background theme.
+    body.style.backgroundImage = ''
+    body.removeAttribute('class')
+    body.classList.add(theme)
+
+    // Set the taskbar theme.
+    taskBar.removeAttribute('class')
+    taskBar.classList.add(`${theme}Bar`)
+  } else {
+    // Set the custom theme.
+    body.removeAttribute('class')
+    body.style.backgroundColor = 'white'
+    body.style.backgroundImage = `url(${customImage})`
+
+    taskBar.removeAttribute('class')
+    taskBar.classList.add('customBar')
+  }
 }
 
 /**
@@ -146,5 +173,9 @@ function createApp (name, component) {
     app.focus()
   })
 
-  app.addEventListener('savedImage', () => changeBackground())
+  app.addEventListener('savedImage', () => setNewTheme('custom'))
+  app.addEventListener('newThemeSet', (event) => {
+    setNewTheme(event.detail)
+    localStorage.setItem('theme', event.detail)
+  })
 }
