@@ -79,7 +79,7 @@ function createApp (name, component) {
 
   // Make the 'X' remove the app and lower the appCounter.
   exit.addEventListener('click', () => {
-    appCounter -= 1
+    appCounter = appCounter - 1
     main.removeChild(app)
   })
 

@@ -8,13 +8,14 @@ const drawingBoardStyles = `
 #picker {
     display: flex;
     height: 60px;
+    width: 100%;
 }
 
 #brushPicker,
 #colorPicker,
 #extra {
     display: flex;
-    background-color: white;
+    background-color: transparent;
     margin: 5px;
     padding: 5px
     justify-content: space-between;
@@ -24,8 +25,17 @@ const drawingBoardStyles = `
 #colorPicker button,
 #extra button {
     width: 45px;
-    min-width: 48px;
     cursor: pointer;
+}
+
+#brushPicker button {
+    border: 2px solid black;
+}
+
+#brushPicker button,
+#colorPicker button {
+    border-radius: 50px;
+    box-shadow: 2px 2px 5px 0px;
 }
 
 canvas {
@@ -38,89 +48,86 @@ button {
     width: 100%;
     height: 100%;
     padding: 0;
+    margin-left: 3px;
+    border: 1px solid transparent;
 }
 
 #black {
     background-color: black;
-    border: 2px solid #c4e0f7;
 }
 
 #grey {
     background-color: grey;
-    border: 2px solid #c4e0f7;    
 }
 
 #maroon {
-    background-color: maroon;
-    border: 2px solid #c4e0f7;    
+    background-color: maroon; 
 }
 
 #red {
-    background-color: red;
-    border: 2px solid #c4e0f7;    
+    background-color: red;    
 }
 
 #orange {
-    background-color: orange;
-    border: 2px solid #c4e0f7;    
+    background-color: orange;   
 }
 
 #yellow {
     background-color: yellow;
-    border: 2px solid #c4e0f7;    
 }
 
 #green {
-    background-color: green;
-    border: 2px solid #c4e0f7;    
+    background-color: green;   
 }
 
 #cyan {
     background-color: cyan;
-    border: 2px solid #c4e0f7;    
 }
 
 #navy {
-    background-color: navy;
-    border: 2px solid #c4e0f7;    
+    background-color: navy;   
 }
 
 #purple {
-    background-color: purple;
-    border: 2px solid #c4e0f7;    
-}
-
-#small {
-    background-color: white;
-    background: linear-gradient(70deg, white 42%, black 47%, black 53%, white 58%);
-    border: 2px solid #c4e0f7;
-}
-
-#medium {
-    background-color: white;
-    background: linear-gradient(70deg, white 35%, black 40%, black 60%, white 65%);
-    border: 2px solid #c4e0f7;
-}
-
-#big {
-    background-color: white;
-    background: linear-gradient(70deg, white 25%, black 30%, black 70%, white 75%);
-    border: 2px solid #c4e0f7;
+    background-color: purple;  
 }
 
 #white {
     background-color: white;
-    border: 2px solid #c4e0f7;
+}
+
+#small {
+    background: linear-gradient(70deg, white 42%, black 47%, black 53%, white 58%);
+}
+
+#medium {
+    background: linear-gradient(70deg, white 35%, black 40%, black 60%, white 65%);
+}
+
+#big {
+    background: linear-gradient(70deg, white 25%, black 30%, black 70%, white 75%);
 }
 
 #wipeAll {
     background-image: url("../../../images/wipeX.png");
     background-color: white;
-    border: 2px solid #c4e0f7;
+    background-position: center;
+    border: 2px solid white;
 }
 
-#colorWheel {
-    border: 2px solid #c4e0f7;
+input[type="color"] {
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 0;
 }
 
 #extra #setBackground {
@@ -129,17 +136,10 @@ button {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     font-size: 12px;
-    border: 2px solid #c4e0f7;
 }
 
-#brushPicker button:hover {
-    border: 2px solid #ffad42;  
-}
-
-#colorPicker button:hover {
-    border: 2px solid #ffad42;  
-}
-
+#brushPicker button:hover,
+#colorPicker button:hover,
 #extra button:hover {
     border: 2px solid #ffad42;  
 }

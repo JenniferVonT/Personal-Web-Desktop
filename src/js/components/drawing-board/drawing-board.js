@@ -33,8 +33,8 @@ ${drawingBoardStyles}
             <button class="color" id="white"></button>
         </div>
         <div id="extra">
+            <button id="colorWheel"><input type="color"></button>
             <button id="wipeAll"></button>
-            <button id="colorWheel"></button>
             <button id="setBackground">Set as Desktop Background</button>
         </div>
     </div>
@@ -83,7 +83,7 @@ customElements.define('drawing-board',
       this.wipe.addEventListener('click', () => { this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) })
 
       this.background.addEventListener('click', () => this.saveCanvasImage())
-      this.colorWheel.addEventListener('click', () => this.showColorWheel())
+      this.colorWheel.addEventListener('click', (event) => this.showColorWheel(event))
 
       // Add all the mouse movement listeners on the canvas.
       this.canvas.addEventListener('mousedown', (event) => this.startDrawing(event))
@@ -107,11 +107,12 @@ customElements.define('drawing-board',
     /**
      * Show the browsers built in color wheel.
      */
-    showColorWheel () {
+    /* showColorWheel (event) {
     // Create a color wheel input using the browsers built in color-wheel.
       const colorInput = document.createElement('input')
       colorInput.type = 'color'
 
+      const { offsetX, offsetY } = this.getLastMouseCoordinates(event)
       const componentRect = this.getBoundingClientRect()
       const offsetX = componentRect.left + window.scrollX
       const offsetY = componentRect.bottom + window.scrollY
@@ -127,9 +128,11 @@ customElements.define('drawing-board',
         this.activeColor = selectedColor
       })
 
+      this.shadowRoot.querySelector('#wrapper').append(colorInput)
+
       // Trigger a click on the color input to open the color picker dialog
       colorInput.click()
-    }
+    } */
 
     /**
      * Handles the choice of brush size.
