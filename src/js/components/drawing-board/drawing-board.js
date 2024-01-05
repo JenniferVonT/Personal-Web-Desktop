@@ -62,7 +62,7 @@ customElements.define('drawing-board',
       this.brushes = this.shadowRoot.querySelectorAll('.brush')
       this.eraser = this.shadowRoot.querySelector('#eraserBtn')
       this.wipe = this.shadowRoot.querySelector('#wipeAll')
-      this.colorWheel = this.shadowRoot.querySelector('#colorWheel')
+      this.colorWheel = this.shadowRoot.querySelector('input[type="color"]')
       this.background = this.shadowRoot.querySelector('#setBackground')
       this.canvasImageDataURL = ''
 
@@ -82,8 +82,13 @@ customElements.define('drawing-board',
       // Clear the entire canvas.
       this.wipe.addEventListener('click', () => { this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) })
 
+      // Save the image in localStorage and send a custom message about it.
       this.background.addEventListener('click', () => this.saveCanvasImage())
-      this.colorWheel.addEventListener('click', (event) => this.showColorWheel(event))
+
+      this.colorWheel.addEventListener('input', (event) => {
+        const selectedColor = event.target.value
+        this.activeColor = selectedColor
+      })
 
       // Add all the mouse movement listeners on the canvas.
       this.canvas.addEventListener('mousedown', (event) => this.startDrawing(event))
@@ -93,46 +98,17 @@ customElements.define('drawing-board',
     }
 
     /**
-     * Saves the latest image in localStorage (only one) and dispatch an event that a new image is saved.
+     * Show the browsers built in color wheel and pick a color.
      */
-    saveCanvasImage () {
-      this.canvasImageDataURL = this.canvas.toDataURL()
-      localStorage.setItem('savedCanvasImage', this.canvasImageDataURL)
-
-      this.dispatchEvent(new CustomEvent('savedImage', {
-        bubbles: true
-      }))
-    }
-
-    /**
-     * Show the browsers built in color wheel.
-     */
-    /* showColorWheel (event) {
-    // Create a color wheel input using the browsers built in color-wheel.
-      const colorInput = document.createElement('input')
-      colorInput.type = 'color'
-
-      const { offsetX, offsetY } = this.getLastMouseCoordinates(event)
-      const componentRect = this.getBoundingClientRect()
-      const offsetX = componentRect.left + window.scrollX
-      const offsetY = componentRect.bottom + window.scrollY
-
-      // Set the position of the color input element
-      colorInput.style.position = 'absolute'
-      colorInput.style.left = `${offsetX}px`
-      colorInput.style.top = `${offsetY}px`
-
+    handleColorWheel () {
       // Add an event listener for the color input change
-      colorInput.addEventListener('input', (event) => {
+      this.colorWheel.addEventListener('input', (event) => {
         const selectedColor = event.target.value
         this.activeColor = selectedColor
       })
 
-      this.shadowRoot.querySelector('#wrapper').append(colorInput)
-
       // Trigger a click on the color input to open the color picker dialog
-      colorInput.click()
-    } */
+    }
 
     /**
      * Handles the choice of brush size.
