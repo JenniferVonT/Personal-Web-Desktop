@@ -8,12 +8,14 @@
 import './components/chat-app/'
 import './components/memory-game/'
 import './components/drawing-board/'
+import './components/settings-app/'
 
 const main = document.querySelector('main')
 const body = document.querySelector('body')
 const memoryIcon = document.querySelector('#memory')
 const chatIcon = document.querySelector('#chat')
 const drawingIcon = document.querySelector('#drawing')
+const settings = document.querySelector('#settings')
 let appCounter = 0
 
 memoryIcon.addEventListener('click', () => {
@@ -26,6 +28,10 @@ chatIcon.addEventListener('click', () => {
 
 drawingIcon.addEventListener('click', () => {
   createApp('Drawing board', 'drawing-board')
+})
+
+settings.addEventListener('click', () => {
+  createApp('Settings', 'settings-app')
 })
 
 /**
