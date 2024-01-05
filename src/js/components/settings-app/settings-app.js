@@ -16,19 +16,19 @@ template.innerHTML = `
 
   <h1>Select a theme</h1>
 
-  <section class="theme" id="red">
+  <section class="theme" id="red" tabindex="0">
       <h2>RED</h2>
   </section>
   
-  <section class="theme" id="green">
+  <section class="theme" id="green" tabindex="0">
     <h2>GREEN</h2>
   </section>
 
-  <section class="theme" id="blue">
+  <section class="theme" id="blue" tabindex="0">
     <h2>BLUE</h2>
   </section>
 
-  <section class="theme" id="custom">
+  <section class="theme" id="custom" tabindex="0">
     <h2>CUSTOM</h2>
     <p>your latest drawing board image.</p>
   </section>
@@ -60,6 +60,7 @@ customElements.define('settings-app',
       this.green = this.shadowRoot.querySelector('#green')
       this.blue = this.shadowRoot.querySelector('#blue')
       this.custom = this.shadowRoot.querySelector('#custom')
+      this.wrapper = this.shadowRoot.querySelector('#wrapper')
 
       // Get latest drawing board image for the custom theme.
       this.customImage = localStorage.getItem('savedCanvasImage')
@@ -72,17 +73,40 @@ customElements.define('settings-app',
      * Called when inserted into the DOM.
      */
     connectedCallback () {
+      // Handle click event.
       this.red.addEventListener('click', () => this.setTheme('red'),
         { signal: this.#abortController.signal })
-
       this.green.addEventListener('click', () => this.setTheme('green'),
         { signal: this.#abortController.signal })
-
       this.blue.addEventListener('click', () => this.setTheme('blue'),
         { signal: this.#abortController.signal })
-
       this.custom.addEventListener('click', () => this.setTheme('custom'),
         { signal: this.#abortController.signal })
+
+      // Handle keyboard events.
+      this.red.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.setTheme('red')
+        }
+      }, { signal: this.#abortController.signal })
+
+      this.green.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.setTheme('green')
+        }
+      }, { signal: this.#abortController.signal })
+
+      this.blue.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.setTheme('blue')
+        }
+      }, { signal: this.#abortController.signal })
+
+      this.custom.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.setTheme('custom')
+        }
+      }, { signal: this.#abortController.signal })
     }
 
     /**
