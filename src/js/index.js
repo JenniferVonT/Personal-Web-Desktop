@@ -25,16 +25,40 @@ memoryIcon.addEventListener('click', () => {
   createApp('Memory', 'memory-game')
 })
 
+memoryIcon.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    createApp('Memory', 'memory-game')
+  }
+})
+
 chatIcon.addEventListener('click', () => {
   createApp('Chat', 'chat-app')
+})
+
+chatIcon.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    createApp('Chat', 'chat-app')
+  }
 })
 
 drawingIcon.addEventListener('click', () => {
   createApp('Drawing board', 'drawing-board')
 })
 
+drawingIcon.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    createApp('Drawing board', 'drawing-board')
+  }
+})
+
 settings.addEventListener('click', () => {
   createApp('Settings', 'settings-app')
+})
+
+settings.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    createApp('Settings', 'settings-app')
+  }
 })
 
 // Check what theme was last set and put that on.
