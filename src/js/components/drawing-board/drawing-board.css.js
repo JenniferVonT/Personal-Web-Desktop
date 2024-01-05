@@ -1,6 +1,6 @@
 const drawingBoardStyles = `
 #wrapper {
-    width: 850px;
+    width: 880px;
     height: 500px;
     background-color: #c4e0f7;
 }
@@ -119,13 +119,15 @@ button {
     border: 2px solid #c4e0f7;
 }
 
-#bucket {
+#colorWheel {
     border: 2px solid #c4e0f7;
 }
 
-#setBackground {
+#extra #setBackground {
     background-color: azure;
+    width: min-content;
     font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
     font-size: 12px;
     border: 2px solid #c4e0f7;
 }

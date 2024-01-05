@@ -34,10 +34,11 @@ ${drawingBoardStyles}
         </div>
         <div id="extra">
             <button id="wipeAll"></button>
-            <button id="setBackground">Set as back- ground</button>
+            <button id="colorWheel"></button>
+            <button id="setBackground">Set as Desktop Background</button>
         </div>
     </div>
-        <canvas id="canvas" width="840px" height="440px"></canvas>
+        <canvas id="canvas" width="870px" height="440px"></canvas>
 </div>
 `
 
@@ -61,6 +62,7 @@ customElements.define('drawing-board',
       this.brushes = this.shadowRoot.querySelectorAll('.brush')
       this.eraser = this.shadowRoot.querySelector('#eraserBtn')
       this.wipe = this.shadowRoot.querySelector('#wipeAll')
+      this.colorWheel = this.shadowRoot.querySelector('#colorWheel')
       this.background = this.shadowRoot.querySelector('#setBackground')
       this.canvasImageDataURL = ''
 
@@ -81,6 +83,7 @@ customElements.define('drawing-board',
       this.wipe.addEventListener('click', () => { this.context.clearRect(0, 0, this.canvas.width, this.canvas.height) })
 
       this.background.addEventListener('click', () => this.saveCanvasImage())
+      this.colorWheel.addEventListener('click', () => this.showColorWheel())
 
       // Add all the mouse movement listeners on the canvas.
       this.canvas.addEventListener('mousedown', (event) => this.startDrawing(event))
@@ -99,6 +102,33 @@ customElements.define('drawing-board',
       this.dispatchEvent(new CustomEvent('savedImage', {
         bubbles: true
       }))
+    }
+
+    /**
+     * Show the browsers built in color wheel.
+     */
+    showColorWheel () {
+    // Create a color wheel input using the browsers built in color-wheel.
+      const colorInput = document.createElement('input')
+      colorInput.type = 'color'
+
+      const componentRect = this.getBoundingClientRect()
+      const offsetX = componentRect.left + window.scrollX
+      const offsetY = componentRect.bottom + window.scrollY
+
+      // Set the position of the color input element
+      colorInput.style.position = 'absolute'
+      colorInput.style.left = `${offsetX}px`
+      colorInput.style.top = `${offsetY}px`
+
+      // Add an event listener for the color input change
+      colorInput.addEventListener('input', (event) => {
+        const selectedColor = event.target.value
+        this.activeColor = selectedColor
+      })
+
+      // Trigger a click on the color input to open the color picker dialog
+      colorInput.click()
     }
 
     /**
