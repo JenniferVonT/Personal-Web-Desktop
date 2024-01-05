@@ -20,11 +20,11 @@ Sets the size of the brush.
 
 Sets the color of the brush.
 
-## Custom Events
+## Events
 
-### `savedImage`
-
-Dispatched when an image is being saved.
+| Event Name | Fired When |
+|------------|------------|
+|`savedImage`|The 'set as Desktop background' button is clicked.|
 
 #### Example
 

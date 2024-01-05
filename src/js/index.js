@@ -37,7 +37,7 @@ settings.addEventListener('click', () => {
   createApp('Settings', 'settings-app')
 })
 
-// Check what theme was last set and put that on. 
+// Check what theme was last set and put that on.
 if (currentTheme.length !== 0) {
   setNewTheme(currentTheme)
 }

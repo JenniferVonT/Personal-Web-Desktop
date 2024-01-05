@@ -14,6 +14,12 @@ A method that dispatches a custom event based on chosen theme and sends the them
 
 ## Custom Events
 
-### `newThemeSet`
+| Event Name | Fired When |
+|------------|------------|
+|`newThemeSet`|One of the themes are clicked/chosen|
 
-Dispatched when a theme is picked, includes the theme name.
+## Example
+
+```html
+<settings-app></settings-app>
+```

@@ -24,13 +24,10 @@ Default value: undefined.
 
 ## Custom Events
 
-### `tileFlipped`
-
-Is activated when the tile gets the attribute `flipped` and sends the details about the alt attribute of the img child element.
-
-### `disabledTile`
-
-Is activated when the tile gets the attribute `disabled`, just there for outside components to listen for.
+| Event Name | Fired When |
+|------------|------------|
+|`tileFlipped`|Attribute is set as `flipped`|
+|`disabledTile`|Attribute is set to `disabled`|
 
 ## Methods
 
