@@ -98,6 +98,19 @@ customElements.define('drawing-board',
     }
 
     /**
+     * Saves the latest image in localStorage (only one) and dispatch an event that a new image is saved.
+     * Show the browsers built in color wheel and pick a color.
+     */
+    saveCanvasImage () {
+      this.canvasImageDataURL = this.canvas.toDataURL()
+      localStorage.setItem('savedCanvasImage', this.canvasImageDataURL)
+
+      this.dispatchEvent(new CustomEvent('savedImage', {
+        bubbles: true
+      }))
+    }
+
+    /**
      * Show the browsers built in color wheel and pick a color.
      */
     handleColorWheel () {

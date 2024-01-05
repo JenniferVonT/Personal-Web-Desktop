@@ -19,12 +19,12 @@ template.innerHTML = `
       <h2>RED</h2>
   </section>
   
-  <section class="theme" id="blue">
-    <h2>BLUE</h2>
-  </section>
-  
   <section class="theme" id="green">
     <h2>GREEN</h2>
+  </section>
+
+  <section class="theme" id="blue">
+    <h2>BLUE</h2>
   </section>
 
   <section class="theme" id="custom">
@@ -40,6 +40,13 @@ customElements.define('settings-app',
    */
   class extends HTMLElement {
     /**
+     * AbortController instance.
+     *
+     * @type {AbortController}
+     */
+    #abortController
+
+    /**
      * Creates an instance of the current type.
      */
     constructor () {
@@ -47,5 +54,47 @@ customElements.define('settings-app',
 
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
+
+      this.red = this.shadowRoot.querySelector('#red')
+      this.green = this.shadowRoot.querySelector('#green')
+      this.blue = this.shadowRoot.querySelector('#blue')
+      this.custom = this.shadowRoot.querySelector('#custom')
+
+      // Get latest drawing board image for the custom theme.
+      this.customImage = localStorage.getItem('savedCanvasImage')
+      this.custom.style.backgroundImage = `url(${this.customImage})`
+
+      this.#abortController = new AbortController()
     }
+
+    /**
+     * Called when inserted into the DOM.
+     */
+    connectecCallback () {
+      this.red.addEventListener('click', () => this.setTheme('red'),
+        { signal: this.#abortController.signal })
+
+      this.green.addEventListener('click', () => this.setTheme('green'),
+        { signal: this.#abortController.signal })
+
+      this.blue.addEventListener('click', () => this.setTheme('blue'),
+        { signal: this.#abortController.signal })
+
+      this.custom.addEventListener('click', () => this.setTheme('custom'),
+        { signal: this.#abortController.signal })
+    }
+
+    /**
+     * Called when removed from the DOM.
+     */
+    disconnectedCallback () {
+      this.#abortController.abort()
+    }
+
+    /**
+     * Handles the theme being selected.
+     *
+     * @param {string} theme - The theme to change to.
+     */
+    setTheme (theme) {}
   })
