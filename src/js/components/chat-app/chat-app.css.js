@@ -6,7 +6,7 @@ const chatAppStyles = `
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     width: 450px;
-    height: 450px;
+    height: 100%;
 }
 
 #chatWindow {
