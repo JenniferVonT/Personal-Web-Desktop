@@ -16,7 +16,6 @@ const memoryIcon = document.querySelector('#memory')
 const chatIcon = document.querySelector('#chat')
 const drawingIcon = document.querySelector('#drawing')
 const settings = document.querySelector('#settings')
-const customImage = localStorage.getItem('savedCanvasImage')
 const currentTheme = localStorage.getItem('theme')
 const taskBar = document.querySelector('#taskbar')
 
@@ -38,7 +37,7 @@ settings.addEventListener('click', () => {
   createApp('Settings', 'settings-app')
 })
 
-// Check what theme was last set and put that on.
+// Check what theme was last set and put that on. 
 if (currentTheme.length !== 0) {
   setNewTheme(currentTheme)
 }
@@ -49,6 +48,8 @@ if (currentTheme.length !== 0) {
  * @param {string} theme - The name of the theme.
  */
 function setNewTheme (theme) {
+  const customImage = localStorage.getItem('savedCanvasImage')
+
   if (theme !== 'custom') {
     // Set the background theme.
     body.style.backgroundImage = ''
