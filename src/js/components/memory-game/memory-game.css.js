@@ -17,28 +17,28 @@ flipping-tile::part(front) {
   }
 
   .two {
-      grid-column: 1;
-      grid-row: 2;
-  }
-
-  .three {
       grid-column: 2;
       grid-row: 1;
   }
 
-  .four {
-      grid-column: 2;
-      grid-row: 2;
-  }
-
-  .five {
+  .three {
       grid-column: 3;
       grid-row: 1;
   }
 
-  .six {
+  .four {
       grid-column: 4;
       grid-row: 1;
+  }
+
+  .five {
+      grid-column: 1;
+      grid-row: 2;
+  }
+
+  .six {
+      grid-column: 2;
+      grid-row: 2;
   }
 
   .seven {
@@ -57,33 +57,33 @@ flipping-tile::part(front) {
   }
 
   .ten {
-      grid-column: 1;
-      grid-row: 4;
+      grid-column: 2;
+      grid-row: 3;
   }
 
   .eleven {
-      grid-column: 2;
+      grid-column: 3;
       grid-row: 3;
   }
 
   .twelve {
+      grid-column: 4;
+      grid-row: 3;
+  }
+
+  .thirteen {
+      grid-column: 1;
+      grid-row: 4;
+  }
+
+  .fourteen {
       grid-column: 2;
       grid-row: 4;
   }
 
-  .thirteen {
-      grid-column: 3;
-      grid-row: 3;
-  }
-
-  .fourteen {
+  .fifteen {
       grid-column: 3;
       grid-row: 4;
-  }
-
-  .fifteen {
-      grid-column: 4;
-      grid-row: 3;
   }
 
   .sixteen {
@@ -120,7 +120,6 @@ button:focus {
     display: block;
     width: 410px;
     padding: 10px;
-    margin: 10px;
 }
 
 div {

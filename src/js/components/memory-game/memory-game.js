@@ -162,8 +162,6 @@ customElements.define('memory-game',
           if (event.key === 'Enter' && this.#clickable && !tile.hasAttribute('flipped') && !tile.hasAttribute('disabled')) {
             tile.setAttribute('flipped', '')
             this.#tries += 1
-          } else if (event.key.startsWith('Arrow')) {
-            this.handleTileArrowNavigation(event.key, index)
           }
         })
 
@@ -195,6 +193,49 @@ customElements.define('memory-game',
           }
         })
       })
+
+      // Attach arrow key event listeners for navigation.
+      this.#board.addEventListener('keydown', (event) => {
+        if (this.#clickable && event.key.startsWith('Arrow')) {
+          const focusedTile = this.shadowRoot.activeElement
+
+          const index = Array.from(this.shadowRoot.querySelectorAll('flipping-tile')).indexOf(focusedTile)
+          this.#handleTileArrowNavigation(event.key, index)
+        }
+      })
+    }
+
+    /**
+     * Handle arrow key navigation for tiles.
+     *
+     * @param {string} key - The pressed key.
+     * @param {number} currentIndex - Index of the currently focused tile.
+     */
+    #handleTileArrowNavigation (key, currentIndex) {
+      const allTiles = this.shadowRoot.querySelectorAll('flipping-tile')
+      let newIndex
+
+      switch (key) {
+        case 'ArrowUp':
+          newIndex = currentIndex - 4
+          break
+        case 'ArrowDown':
+          newIndex = currentIndex + 4
+          break
+        case 'ArrowLeft':
+          newIndex = currentIndex - 1
+          break
+        case 'ArrowRight':
+          newIndex = currentIndex + 1
+          break
+        default:
+          return
+      }
+
+      // Ensure the new index is within the valid range.
+      if (newIndex >= 0 && newIndex < allTiles.length) {
+        allTiles[newIndex].focus()
+      }
     }
 
     /**
@@ -264,6 +305,8 @@ customElements.define('memory-game',
       // Add the first two classes in the classes array.
       tile1.classList.add(this.classes[0])
       tile2.classList.add(this.classes[1])
+      tile1.setAttribute('tabindex', '0')
+      tile2.setAttribute('tabindex', '0')
 
       // After that remove those classes that are used from the array.
       this.classes.shift()
@@ -272,9 +315,6 @@ customElements.define('memory-game',
       // Insert the finished tiles into the board.
       this.#board.append(tile1)
       this.#board.append(tile2)
-
-      tile1.tabIndex = 0
-      tile2.tabIndex = 0
     }
 
     /**
