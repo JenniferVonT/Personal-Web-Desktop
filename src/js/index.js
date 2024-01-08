@@ -62,8 +62,10 @@ settings.addEventListener('keydown', (event) => {
 })
 
 // Check what theme was last set and put that on.
-if (currentTheme.length !== 0) {
+if (currentTheme) {
   setNewTheme(currentTheme)
+} else {
+  setNewTheme('blue')
 }
 
 /**
@@ -197,7 +199,6 @@ function createApp (name, component) {
   // Move the clicked window to the front.
   app.addEventListener('click', () => {
     app.style.zIndex = appCounter + 1
-    app.focus()
   })
 
   // Listen for the paint application to set an image as a background.
@@ -209,5 +210,9 @@ function createApp (name, component) {
     localStorage.setItem('theme', event.detail)
   })
 
-  app.focus()
+  if (app.querySelector('chat-app')) {
+    customComponent.focus()
+  } else {
+    app.focus()
+  }
 }

@@ -82,7 +82,7 @@ main {
 
 .red {
 	background-color: #fc8279;
-    background: radial-gradient(circle, #000000 48%, #fc8279 100%);
+    background: radial-gradient(circle, #000000 60%, #fc8279 80%, #c74238 100%);
 }
 
 .redBar {
