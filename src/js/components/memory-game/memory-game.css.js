@@ -134,11 +134,16 @@ div {
 }
 
 #welcomeText {
+    margin-top: 100px;
     width: 430px;
 }
 
 h1 {
-    text-decoration: underline;
+    display: inline-block;
+    border: 4px solid black;
+    padding: 10px;
+    box-shadow: 0px 10px 15px 5px #868686;
+    background-color: #b3eaff;
 }
 
 p {
@@ -147,8 +152,16 @@ p {
 
 #tries,
 #time {
-    text-decoration: underline;
     color: red;
+    background-color: #b3eaff;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border: 2px solid red;
+}
+
+#results {
+    margin-top: 100px;
 }
 `
 export default memoryGameStyles

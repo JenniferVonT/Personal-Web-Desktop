@@ -108,6 +108,7 @@ function createApp (name, component) {
   const appBar = document.createElement('div')
   const exit = document.createElement('p')
   const appName = document.createElement('p')
+  const customComponent = document.createElement(component)
 
   appName.textContent = name
   exit.textContent = '✖'
@@ -117,6 +118,7 @@ function createApp (name, component) {
   appBar.classList.add('appBar')
   app.classList.add('app')
   app.classList.add(component)
+  app.tabIndex = 0
 
   // Make the appBar draggable.
   appBar.setAttribute('draggable', 'true')
@@ -132,7 +134,7 @@ function createApp (name, component) {
   appBar.append(appName)
   appBar.append(exit)
   app.append(appBar)
-  app.append(document.createElement(component))
+  app.append(customComponent)
   main.append(app)
 
   // Make the 'X' remove the app and lower the appCounter.
@@ -198,9 +200,14 @@ function createApp (name, component) {
     app.focus()
   })
 
+  // Listen for the paint application to set an image as a background.
   app.addEventListener('savedImage', () => setNewTheme('custom'))
+
+  // Listen for when the settings application changes themes.
   app.addEventListener('newThemeSet', (event) => {
     setNewTheme(event.detail)
     localStorage.setItem('theme', event.detail)
   })
+
+  app.focus()
 }

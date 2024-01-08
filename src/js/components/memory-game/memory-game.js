@@ -14,7 +14,7 @@ template.innerHTML = `
   ${memoryGameStyles}
 </style>
   <div id="startBar">
-    <button id="restart">Restart</button>
+    <button id="restart">Menu</button>
     <button id="easy" class="gameModes">Easy</button>
     <button id="medium" class="gameModes">Medium</button>
     <button id="hard" class="gameModes">Hard</button>
@@ -33,7 +33,7 @@ template.innerHTML = `
   <div id="results" class="disappear">
     <h1>Victory!</h1>
     <p>You completed the game in <b id="tries"> <!--Amount of tries--></b> tries!</p>
-    <p>It took you <b id="time"> <!--Amount of seconds--></b> seconds to complete!</p>
+    <p>It took you <b id="time"> <!--Amount of seconds--></b> seconds!</p>
   </div>
   
   <div id="board">
@@ -86,6 +86,7 @@ customElements.define('memory-game',
       this.flippedTilesAlt = []
       this.#board = this.shadowRoot.querySelector('#board')
       this.classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen']
+      this.classesForEasy = ['two', 'three', 'six', 'seven']
       this.#clickable = true
       this.#tries = 0
 
@@ -97,6 +98,7 @@ customElements.define('memory-game',
       this.welcomeText = this.shadowRoot.querySelector('#welcomeText')
       this.result = this.shadowRoot.querySelector('#results')
       this.start = 0
+      this.newIndex = 0
 
       this.restartButton.tabIndex = 0
       this.easyButton.tabIndex = 0
@@ -155,13 +157,16 @@ customElements.define('memory-game',
     #handleTileClicks () {
       // Attach event listeners on all tiles and set the flipped attribute when clicked.
       this.shadowRoot.querySelectorAll('flipping-tile').forEach((tile, index) => {
-        // Make the tile focusable
-        tile.tabIndex = 0
+        // Make the tiles focusable
+        tile.setAttribute('tabindex', '0')
 
+        // Set up if the user uses the 'Enter' key to select a tile or press Esc to restart.
         tile.addEventListener('keydown', (event) => {
-          if (event.key === 'Enter' && this.#clickable && !tile.hasAttribute('flipped') && !tile.hasAttribute('disabled')) {
+          if (event.key === 'Enter' && this.#clickable && !tile.hasAttribute('disabled')) {
             tile.setAttribute('flipped', '')
             this.#tries += 1
+          } else if (event.key === 'Escape') {
+            this.restartGame()
           }
         })
 
@@ -185,6 +190,7 @@ customElements.define('memory-game',
 
         // Listen for when the tiles become disabled (there has been a match!)
         tile.addEventListener('disabledTile', () => {
+          tile.removeAttribute('tileIndex')
           const allTiles = this.shadowRoot.querySelectorAll('flipping-tile')
           const areAllTilesDisabled = [...allTiles].every(tile => tile.hasAttribute('disabled'))
 
@@ -194,12 +200,13 @@ customElements.define('memory-game',
         })
       })
 
-      // Attach arrow key event listeners for navigation.
+      // Listen for the arrow keys for navigation.
       this.#board.addEventListener('keydown', (event) => {
-        if (this.#clickable && event.key.startsWith('Arrow')) {
+        if (event.key.startsWith('Arrow')) {
           const focusedTile = this.shadowRoot.activeElement
 
           const index = Array.from(this.shadowRoot.querySelectorAll('flipping-tile')).indexOf(focusedTile)
+
           this.#handleTileArrowNavigation(event.key, index)
         }
       })
@@ -213,28 +220,27 @@ customElements.define('memory-game',
      */
     #handleTileArrowNavigation (key, currentIndex) {
       const allTiles = this.shadowRoot.querySelectorAll('flipping-tile')
-      let newIndex
 
       switch (key) {
         case 'ArrowUp':
-          newIndex = currentIndex - 4
+          this.newIndex = currentIndex - 4
           break
         case 'ArrowDown':
-          newIndex = currentIndex + 4
+          this.newIndex = currentIndex + 4
           break
         case 'ArrowLeft':
-          newIndex = currentIndex - 1
+          this.newIndex = currentIndex - 1
           break
         case 'ArrowRight':
-          newIndex = currentIndex + 1
+          this.newIndex = currentIndex + 1
           break
         default:
           return
       }
 
       // Ensure the new index is within the valid range.
-      if (newIndex >= 0 && newIndex < allTiles.length) {
-        allTiles[newIndex].focus()
+      if (this.newIndex >= 0 && this.newIndex < allTiles.length) {
+        allTiles[this.newIndex].focus()
       }
     }
 
@@ -284,11 +290,6 @@ customElements.define('memory-game',
           this.#appendTiles(i)
         }
       }
-
-      const firstTile = this.shadowRoot.querySelector('flipping-tile')
-      if (firstTile) {
-        firstTile.focus()
-      }
     }
 
     /**
@@ -303,14 +304,23 @@ customElements.define('memory-game',
       const tile2 = tiles[1]
 
       // Add the first two classes in the classes array.
-      tile1.classList.add(this.classes[0])
-      tile2.classList.add(this.classes[1])
+      console.log(this.getAttribute('grid'))
+      if (this.getAttribute('grid') === '4') {
+        tile1.classList.add(this.classesForEasy[0])
+        tile2.classList.add(this.classesForEasy[1])
+      } else {
+        tile1.classList.add(this.classes[0])
+        tile2.classList.add(this.classes[1])
+      }
+
       tile1.setAttribute('tabindex', '0')
       tile2.setAttribute('tabindex', '0')
 
-      // After that remove those classes that are used from the array.
-      this.classes.shift()
-      this.classes.shift()
+      // Remove those classes that are used from the array.
+      for (let i = 0; i < 2; i++) {
+        this.classes.shift()
+        this.classesForEasy.shift()
+      }
 
       // Insert the finished tiles into the board.
       this.#board.append(tile1)
@@ -382,8 +392,9 @@ customElements.define('memory-game',
      * Resets the game to the start screen.
      */
     restartGame () {
-      this.#board.textContent = ''
+      this.#board.innerHTML = ''
       this.start = 0
+      this.newIndex = 0
 
       this.welcomeText.classList.remove('disappear')
       this.allButtons.forEach((button) => {
@@ -397,6 +408,7 @@ customElements.define('memory-game',
       }
 
       this.classes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen']
+      this.classesForEasy = ['two', 'three', 'six', 'seven']
       this.flippedTilesAlt = []
       this.#tries = 0
     }
