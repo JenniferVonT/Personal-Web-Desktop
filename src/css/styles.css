@@ -1,0 +1,112 @@
+body {
+	margin: 0;
+	min-height: 100vh;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	background: #000000;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat; 
+	overflow: hidden;
+}
+
+main {
+	padding: 50px;
+}
+
+.app {
+	width: min-content;
+	height: max-content;
+	background-color: #f1f1f1;
+	padding-bottom: 5px;
+	border: 1px solid black;
+	border-radius: 5px;
+	position: absolute;
+}
+
+.appBar {
+	height: 20px;
+	display: flex;
+	justify-content: space-between;
+	background-color: #3a3a3a;
+	color: rgb(226, 226, 226);
+	align-items: center;
+	padding-bottom: 2px;
+	padding-right: 4px;
+	border-bottom: 2px solid black;
+	cursor: default;
+}
+
+.name {
+	text-align: left;
+	margin-left: 5px;
+}
+
+.exit {
+	width: min-content;
+	margin: 0;
+	text-align: right;
+}
+
+#taskbar {
+	margin-top: auto;
+	padding-left: 10px;
+	position: sticky;
+	display: flex;
+	flex-direction: row;
+	height: 60px;
+}
+
+.app-icons {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin-right: 6px;
+	margin-top: 4px; 
+}
+
+.app-icons:hover {
+	transform: scale(1.05);
+}
+
+.app-icons:active {
+	transform: scale(1);
+}
+
+.memory-game {
+	height: 575px;
+}
+
+/*------ THEMES ------*/
+
+.red {
+	background-color: #fc8279;
+    background: radial-gradient(circle, #000000 60%, #fc8279 80%, #c74238 100%);
+}
+
+.redBar {
+	background-color: #ec342742;
+}
+
+.green {
+	background-color: #73ff40;
+    background: radial-gradient(circle, #000000 35%, #73ff40 50%, #000000 65%);
+}
+
+.greenBar {
+	background-color: #73ff4042;
+}
+
+.blue {
+	background-color: #00eeff;
+    background: linear-gradient(45deg, #000000 35%, #00edff 50%, #000000 65%);
+}
+
+.blueBar {
+	background-color: #00eeff42;
+}
+
+.customBar {
+	background-color: #0000009d;
+}
